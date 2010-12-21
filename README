@@ -1,8 +1,9 @@
-#Global setup:
- Download and install Git
+# Global setup #
+# Download and install Git
   git config --global user.name "Changhyun lee"
   git config --global user.email leechwin@nate.com
-        Next steps:
+
+# Make workspace or git clone
   mkdir leechwin.github.com
   cd leechwin.github.com
   git init
@@ -11,7 +12,8 @@
   git commit -m 'first commit'
   git remote add origin git@github.com:leechwin/leechwin.github.com.git
   git push origin master
-      Existing Git Repo?
-  cd existing_git_repo
-  git remote add origin git@github.com:leechwin/leechwin.github.com.git
-  git push origin master
+
+# git push
+  git add *     # file name
+  git commit -a # input comment
+  git push

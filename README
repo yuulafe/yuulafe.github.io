@@ -1,4 +1,4 @@
-Global setup:
+#Global setup:
  Download and install Git
   git config --global user.name "Changhyun lee"
   git config --global user.email leechwin@nate.com

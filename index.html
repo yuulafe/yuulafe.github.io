@@ -1,39 +1,81 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lee ChangHyun">
+    <meta name="author" content="leechwin1@gmail.com">
     <title>Lee Changhyun</title>
+    <!-- Bootstrap -->
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
 </head>
 
 <body>
-    <h1>Lee Changhyun</h1>
-    <div>E-Mail
-        <ul>
-            <li>leechwin1@gmail.com</li>
-        </ul>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" onclick="javascript:alert('I Love NamHee!')">Lee Changhyun</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="http://leechwin.tistory.com/">Tistory</a></li>
+              <li><a href="https://github.com/leechwin">Github</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
     </div>
-    <div>Blogs
-        <ul>
-            <li><a href="http://leechwin.tistory.com/">http://leechwin.tistory.com/</a></li>
-            <li><a href="https://github.com/leechwin">https://github.com/leechwin</a></li>
-        </ul>
+
+    <div class="container">
+        <h1>Lee Changhyun</h1>
+        <div>E-Mail
+            <ul>
+                <li>leechwin1@gmail.com</li>
+            </ul>
+        </div>
+        <div>Blogs
+            <ul>
+                <li><a href="http://leechwin.tistory.com/">http://leechwin.tistory.com/</a></li>
+                <li><a href="https://github.com/leechwin">https://github.com/leechwin</a></li>
+            </ul>
+        </div>
+        <div>Interests
+            <ul>
+                <li>Web Technology: JavaScript/HTML/CSS/Json/Node.js</li>
+                <li>Eclipse Plugin Technology</li>
+                <li>JAVA</li>
+                <li>C++</li>
+                <li>WIN32</li>
+            </ul>
+        </div>
+        <div>Career
+            <ul>
+                <li>2002 ~ 2009 : KyungWon University. Computer Science</li>
+                <li>2009.03 ~ 2010.07 : TmaxWindow MFC DLL</li>
+                <li>2010.07 ~ 2010.12 : SDK</li>
+                <li>2011 ~ Current : Tizen Web SDK</li>
+            </ul>
+        </div>
+
     </div>
-    <div>Interests
-        <ul>
-            <li>Web Technology: JavaScript/HTML/CSS/Json/Node.js</li>
-            <li>Eclipse Plugin Technology</li>
-            <li>JAVA</li>
-            <li>C++</li>
-            <li>WIN32</li>
-        </ul>
-    </div>
-    <div>Career
-        <ul>
-            <li>2002 ~ 2009 : 경원대학교 전자거래학사</li>
-            <li>2009.03 ~ 2010.07 : TmaxWindow MFC 호환 DLL 개발</li>
-            <li>2010.07 ~ 2010.12 : SDK 개발</li>
-            <li>2011 ~ 현재 : Tizen Web SDK 개발</li>
-        </ul>
-    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 </body>
 
 </html>

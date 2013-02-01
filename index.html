@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lee ChangHyun">
+    <meta name="description" content="Lee Changhyun">
     <meta name="author" content="leechwin1@gmail.com">
-    <title>Lee Changhyun</title>
-    <!-- Bootstrap -->
-    <style>
-      body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
-    </style>
+
+    <title>Lee Chang hyun</title>
+
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="css/style_v.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -22,19 +21,19 @@
 </head>
 
 <body>
+
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
           <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
           </a>
-          <a class="brand" onclick="javascript:alert('I Love NamHee!')">Lee Changhyun</a>
+          <a class="brand" onclick="onBrand()">Lee Chang hyun</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="http://leechwin.tistory.com/">Tistory</a></li>
+              <!-- li class="active"><a href="#">Home</a></li-->
+              <li><a href="http://leechwin.tistory.com/">Blog</a></li>
               <li><a href="https://github.com/leechwin">Github</a></li>
             </ul>
           </div><!--/.nav-collapse -->
@@ -43,40 +42,165 @@
     </div>
 
     <div class="container">
-        <h1>Lee Changhyun</h1>
-        <div>E-Mail
-            <ul>
-                <li>leechwin1@gmail.com</li>
-            </ul>
-        </div>
-        <div>Blogs
-            <ul>
-                <li><a href="http://leechwin.tistory.com/">http://leechwin.tistory.com/</a></li>
-                <li><a href="https://github.com/leechwin">https://github.com/leechwin</a></li>
-            </ul>
-        </div>
-        <div>Interests
-            <ul>
-                <li>Web Technology: JavaScript/HTML/CSS/Json/Node.js</li>
-                <li>Eclipse Plugin Technology</li>
-                <li>JAVA</li>
-                <li>C++</li>
-                <li>WIN32</li>
-            </ul>
-        </div>
-        <div>Career
-            <ul>
-                <li>2002 ~ 2009 : KyungWon University. Computer Science</li>
-                <li>2009.03 ~ 2010.07 : TmaxWindow MFC DLL</li>
-                <li>2010.07 ~ 2010.12 : SDK</li>
-                <li>2011 ~ Current : Tizen Web SDK</li>
-            </ul>
-        </div>
+        <div class="label label-info">E-Mail</div>
+        <ul>
+            <li>leechwin1@gmail.com</li>
+        </ul>
+        <br>
 
+        <div class="label label-success">Blog</div>
+        <ul>
+            <li><a href="http://leechwin.tistory.com/">http://leechwin.tistory.com/</a></li>
+        </ul>
+        <br>
+
+        <div class="label label-important">Repository</div>
+        <ul>
+            <li><a href="https://github.com/leechwin">https://github.com/leechwin</a></li>
+            <li><a href="http://www.slideshare.net/ChanghyunLee4/web-app-14891739">Slideshare - "Webapp development reviews"</a></li>
+        </ul>
+        <br>
+
+        <div class="label label-warning">Interests</div>
+        <ul>
+            <li>Web Technologies: JavaScript/HTML/CSS/Json</li>
+            <li>ServerSide: Node.js</li>
+            <li>Eclipse Plugin Technology</li>
+            <li>JAVA</li>
+            <li>C++</li>
+            <li>WIN32</li>
+            <li>MFC</li>
+        </ul>
+        <br>
+
+        <div class="label label-inverse">Hobby</div>
+        <ul>
+            <li>Snowboard, Soccer, Basketball, Fishing, Classical guitar, F1 Waching</li>
+        </ul>
+        <br>
+
+        <div class="label">Career</div>
+        <div id="timeline">
+            <ul id="dates">
+                <li><a href="#2011" class="selected">2011</a></li>
+                <li><a href="#2010">2010</a></li>
+                <li><a href="#2009">2009</a></li>
+                <li><a href="#2002">2002</a></li>
+                <li><a href="#1999">1999</a></li>
+                <li><a href="#1996">1996</a></li>
+                <li><a href="#1990">1990</a></li>
+                <li><a href="#1983">1983</a></li>
+            </ul>
+            <ul id="issues">
+                <li id="2011" class="selected">
+                    <img src="images/tizen.png" width="256" height="256" />
+                    <img src="images/tizenschools.png" width="256" height="256" />
+                    <h1>2011 ~ Current </h1>
+                    <div>S-Core</div>
+                    <div>- Advisory Engineer</div>
+                    <br>
+                    <div><a href="https://developer.tizen.org/">Tizen SDK</a></div>
+                    <div><a href="https://www.tizen.org/sites/default/files/tizen_sdk_introductionlinuxsummit.pdf">- Introduction to Tizen SDK</a></div>
+                    <div>- Tizen Web IDE Development: Editor, Preview, Validation(js,css), TemplateEngine etc.</div>
+                    <div>- Technique: JAVA, Eclipse Plugin Technology, HTML, CSS, Javascript</div>
+                </li>
+
+                <li id="2010">
+                    <img src="images/score.png" width="120" height="120" />
+                    <img src="images/wac.png" width="120" height="120" />
+                    <h1>2010.07 ~ 2010.12</h1>
+                    <div>S-Core</div>
+                    <div>- Researcher Engineer</div>
+                    <br>
+                    <div>WAC IDE</div>
+                    <div>- WAC Sample Widget, Log system</div>
+                    <div>- Technique: C, JAVA, HTML, CSS, Javascript</div>
+                </li>
+
+                <li id="2009">
+                    <img src="images/tmaxcore.png" width="120" height="120" />
+                    <img src="images/tmaxwindow.png" width="120" height="120" />
+                    <img src="images/mfc.png" width="256" height="256" />
+                    <h1>2009 ~ 2010.06</h1>
+                    <div>Tmaxcore</div>
+                    <div>- Researcher Engineer</div>
+                    <br>
+                    <div>Compatible mfc.dll development in Tmaxwindow</div>
+                    <div>- CCApp, CCDoucment, CControl etc.</div>
+                    <div>- Technique: Win32, C++, MFC</div>
+                </li>
+
+                <li id="2002">
+                    <img src="images/gachon.png" width="256" height="256" />
+                    <h1>2002 ~ 2009</h1>
+                    <div>KyungWon University</div>
+                    <div>- Bachelor of Engineering in Computer Science.</div>
+                    <br>
+                    <div>Graduation portfolio:</div>
+                    <div>- Ski lift automation using RFID systems.</div>
+                    <div>- Technique: RFID Kit, C, C++, MFC, JSP, HTML, CSS, Javascript</div>
+                </li>
+
+                <li id="1999">
+                    <img src="images/daeshin.png" width="256" height="256" />
+                    <h1>1999</h1>
+                    <p>Entrance in high school.</p>
+                </li>
+
+                <li id="1996">
+                    <img src="images/yonsin.png" width="256" height="256" />
+                    <h1>1996</h1>
+                    <p>Entrance in middle school.</p>
+                </li>
+
+                <li id="1990">
+                    <img src="images/bulgwang.png" width="256" height="256" />
+                    <h1>1990</h1>
+                    <p>Entrance in elementary school.</p>
+                </li>
+
+                <li id="1983">
+                    <img src="images/birth.png" width="256" height="256" />
+                    <h1>1983</h1>
+                    <p>I was born on August 30 in 1983.</p>
+                </li>
+
+            </ul>
+            <div id="grad_top"></div>
+            <div id="grad_bottom"></div>
+            <a href="#" id="next">+</a>
+            <a href="#" id="prev">-</a>
+        </div>
+        <br>
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <!-- Hidden Element -->
+    <div id="myModal" class="modal hide fade">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">I Love NamHee!</button>
+            <h3>Loving You</h3>
+        </div>
+        <div class="modal-body">
+            <p>One fine body…</p>
+        </div>
+    </div>
+
+    <!--Loading -->
+    <script src="js/jquery-1.9.0.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.timelinr-0.9.52.js"></script>
+    <script>
+        $(function(){
+            $().timelinr({
+                orientation:    'vertical',
+                issuesSpeed:    300,
+                datesSpeed:     100,
+                arrowKeys:      'true',
+            })
+        });
+    </script>
+    <script src="js/main.js"></script>
+
 </body>
 
 </html>

@@ -1,0 +1,23 @@
+/* Bootstrap */
+body {
+    padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+
+@media (max-width: 979px) {
+    body {
+        padding-top: 0;
+    }
+
+    .navbar .brand {
+        padding-left: 30px;
+    }
+}
+
+.li-content {
+    font-size: 14px;
+}
+
+/* Timeline */
+.timelineMajor h2 span {
+    font-size: 22px;
+}

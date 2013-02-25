@@ -12,18 +12,19 @@ body {
         padding-left: 30px;
     }
 
+    /* Photo log container size */
     .container-fluid {
         width: 900px;
     }
 }
-
 @media (max-width: 767px) {
+    /* Photo log container size */
     .container-fluid {
         width: 700px;
     }
 }
-
 @media (max-width: 480px) {
+    /* Photo log container size */
     .container-fluid {
         width: 450px;
     }
@@ -33,9 +34,15 @@ body {
     font-size: 14px;
 }
 
+/* Photo log size */
 .myimage {
     max-height: 75px;
     max-width: 75px;
+}
+
+/* Modal dialog title color of Bootstrap-Image-Gallery */
+h3 {
+    color: #04c;
 }
 
 /* Timeline */

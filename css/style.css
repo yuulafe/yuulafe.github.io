@@ -11,10 +11,31 @@ body {
     .navbar .brand {
         padding-left: 30px;
     }
+
+    .container-fluid {
+        width: 900px;
+    }
+}
+
+@media (max-width: 767px) {
+    .container-fluid {
+        width: 700px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container-fluid {
+        width: 450px;
+    }
 }
 
 .li-content {
     font-size: 14px;
+}
+
+.myimage {
+    max-height: 75px;
+    max-width: 75px;
 }
 
 /* Timeline */

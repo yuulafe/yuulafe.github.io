@@ -20,6 +20,7 @@
 
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap-image-gallery.min.css">
     <link rel="stylesheet" href="css/screen.css" type="text/css" media="screen">
     <link rel="stylesheet" href="css/colorbox.css" type="text/css" media="screen">
     <link href="css/style.css" rel="stylesheet">
@@ -44,7 +45,7 @@
           <div class="nav-collapse collapse">
             <ul class="nav">
               <!-- li class="active"><a href="#">Home</a></li-->
-             <li class="li-content"><a href="http://leechwin.tistory.com/">Blog</a></li>
+              <li class="li-content"><a href="http://leechwin.tistory.com/">Blog</a></li>
               <li class="li-content"><a href="https://github.com/leechwin">Github</a></li>
             </ul>
           </div><!--/.nav-collapse -->
@@ -59,16 +60,11 @@
         </ul>
         <br>
 
-        <div class="label label-success">Blog</div>
-        <ul>
-            <li class="li-content"><a href="http://leechwin.tistory.com/">http://leechwin.tistory.com/</a></li>
-        </ul>
-        <br>
-
         <div class="label label-important">Repository</div>
         <ul>
-            <li class="li-content"><a href="https://github.com/leechwin">https://github.com/leechwin</a></li>
-            <li class="li-content"><a href="http://www.slideshare.net/ChanghyunLee4/web-app-14891739">Slideshare - "Webapp development reviews"</a></li>
+            <li class="li-content"><a href="http://leechwin.tistory.com/">Blog: http://leechwin.tistory.com/</a></li>
+            <li class="li-content"><a href="https://github.com/leechwin">Github: https://github.com/leechwin</a></li>
+            <li class="li-content"><a href="http://www.slideshare.net/ChanghyunLee4/">Slideshare: http://www.slideshare.net/ChanghyunLee4/</a></li>
         </ul>
         <br>
 
@@ -260,6 +256,88 @@
                 <br class="clear">
             </div><!-- /#timelineContainer -->
         </div><!-- /.container -->
+
+
+        <div class="label label-success">PhotoLog</div>
+        <div class="container-fluid">
+            <div id="gallery" data-toggle="modal-gallery" data-target="#modal-gallery">
+                <a href="photolog/snowboard.png" title="하이원 보딩" data-gallery="gallery">
+                    <img class="myimage" src="photolog/snowboard.png">
+                </a>
+                <a href="photolog/diving.png" title="2012 이집트: 홍해 다이빙" data-gallery="gallery">
+                    <img class="myimage" src="photolog/diving.png">
+                </a>
+                <a href="photolog/egypt.png" title="2012 이집트 여행" data-gallery="gallery">
+                    <img class="myimage" src="photolog/egypt.png">
+                </a>
+                <a href="photolog/jump.png" title="2012 IDE team workshop: 번지점프" data-gallery="gallery">
+                    <img class="myimage" src="photolog/jump.png">
+                </a>            
+                <a href="photolog/ideworkshop.png" title="2012 IDE team workshop" data-gallery="gallery">
+                    <img class="myimage" src="photolog/ideworkshop.png">
+                </a>
+                <a href="photolog/f1.png" title="2011 F1 Korea GrandPrix" data-gallery="gallery">
+                    <img class="myimage" src="photolog/f1.png">
+                </a>
+                <a href="photolog/seorak.png" title="2011 설악산" data-gallery="gallery">
+                    <img class="myimage" src="photolog/seorak.png">
+                </a>
+                <a href="photolog/cebu.png" title="2011 Cebu" data-gallery="gallery">
+                    <img class="myimage" src="photolog/cebu.png">
+                </a>
+                <a href="photolog/workshop.png" title="2011 1실 워크샵" data-gallery="gallery">
+                    <img class="myimage" src="photolog/workshop.png">
+                </a>
+                <a href="photolog/fishing.png" title="Fishing" data-gallery="gallery">
+                    <img class="myimage" src="photolog/fishing.png">
+                </a>
+                <a href="photolog/soccer.png" title="S-core soccer club" data-gallery="gallery">
+                    <img class="myimage" src="photolog/soccer.png">
+                </a>
+                <a href="photolog/maratho.png" title="Maratho" data-gallery="gallery">
+                    <img class="myimage" src="photolog/maratho.png">
+                </a>
+                <a href="photolog/army2.png" title="Army: 막타워" data-gallery="gallery">
+                    <img class="myimage" src="photolog/army2.png">
+                </a>
+                <a href="photolog/army1.png" title="Army" data-gallery="gallery">
+                    <img class="myimage" src="photolog/army1.png">
+                </a>
+                <a href="photolog/graduationPortfolio.png" title="GraduationPortfolio" data-gallery="gallery">
+                    <img class="myimage" src="photolog/graduationPortfolio.png">
+                </a>
+                <a href="photolog/classicalguitar.png" title="클래식기타 정기연주회" data-gallery="gallery">
+                    <img class="myimage" src="photolog/classicalguitar.png">
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal-gallery is the modal dialog used for the image gallery -->
+    <div id="modal-gallery" class="modal modal-gallery hide fade" tabindex="-1">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3 class="modal-title"></h3>
+        </div>
+        <div class="modal-body"><div class="modal-image"></div></div>
+        <div class="modal-footer">
+            <a class="btn modal-download" target="_blank">
+                <i class="icon-download"></i>
+                <span>Download</span>
+            </a>
+            <a class="btn btn-success modal-play modal-slideshow" data-slideshow="5000">
+                <i class="icon-play icon-white"></i>
+                <span>Slideshow</span>
+            </a>
+            <a class="btn btn-info modal-prev">
+                <i class="icon-arrow-left icon-white"></i>
+                <span>Previous</span>
+            </a>
+            <a class="btn btn-primary modal-next">
+                <span>Next</span>
+                <i class="icon-arrow-right icon-white"></i>
+            </a>
+        </div>
     </div>
 
     <!-- Hidden Element -->
@@ -272,9 +350,12 @@
         </div>
     </div>
 
+
     <!--Loading -->
     <script src="js/jquery-1.7.1.min.js"></script>  <!-- http://jquery.com/ -->
     <script src="js/bootstrap.min.js"></script>  <!-- http://twitter.github.com/bootstrap/index.html -->
+    <script src="js/load-image.min.js"></script>  <!-- https://github.com/blueimp/JavaScript-Load-Image -->
+    <script src="js/bootstrap-image-gallery.min.js"></script>  <!-- https://github.com/blueimp/Bootstrap-Image-Gallery -->
     <script src="js/colorbox.js"></script>  <!-- http://www.jacklmoore.com/colorbox   https://github.com/jackmoore/colorbox -->
     <script src="js/timeliner.min.js"></script>  <!-- http://www.technotarek.com/timeliner/  https://github.com/technotarek/timeliner -->
     <script>

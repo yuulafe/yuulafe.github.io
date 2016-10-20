@@ -1,6 +1,12 @@
 /* Bootstrap */
+
+html, body {
+max-width: 100%;
+overflow-x: hidden;
+}
+
 body {
-    padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+    padding-top: 70px; /* 60px to make the container go all the way to the bottom of the topbar */
 }
 
 @media (max-width: 979px) {

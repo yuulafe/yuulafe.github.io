@@ -1,33 +1,33 @@
 
 @font-face {
     font-family: 'Radiance';
-    src: url('fonts/radiance.eot');
-    src: url('fonts/radiance.eot?#iefix') format('embedded-opentype'),
-         url('fonts/radiance.woff') format('woff'),
-         url('fonts/radiance.ttf') format('truetype'),
-         url('fonts/radiance.svg#ywftsvg') format('svg');
+    src: url('http://cdn.dota2.com/apps/dota2/fonts/radiance.eot');
+    src: url('http://cdn.dota2.com/apps/dota2/fonts/radiance.eot?#iefix') format('embedded-opentype'),
+         url('http://cdn.dota2.com/apps/dota2/fonts/radiance.woff') format('woff'),
+         url('http://cdn.dota2.com/apps/dota2/fonts/radiance.ttf') format('truetype'),
+         url('http://cdn.dota2.com/apps/dota2/fonts/radiance.svg#ywftsvg') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Radiance-Bold';
-    src: url('fonts/radiance-bold.eot');
-    src: url('fonts/radiance-bold.eot?#iefix') format('embedded-opentype'),
-         url('fonts/radiance-bold.woff') format('woff'),
-         url('fonts/radiance-bold.ttf') format('truetype'),
-         url('fonts/radiance-bold.svg#ywftsvg') format('svg');
+    src: url('http://cdn.dota2.com/apps/dota2/fonts/radiance-bold.eot');
+    src: url('http://cdn.dota2.com/apps/dota2/fonts/radiance-bold.eot?#iefix') format('embedded-opentype'),
+         url('http://cdn.dota2.com/apps/dota2/fonts/radiance-bold.woff') format('woff'),
+         url('http://cdn.dota2.com/apps/dota2/fonts/radiance-bold.ttf') format('truetype'),
+         url('http://cdn.dota2.com/apps/dota2/fonts/radiance-bold.svg#ywftsvg') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Radiance-SemiBold';
-    src: url('fonts/radiance-semibold.eot');
-    src: url('fonts/radiance-semibold.eot?#iefix') format('embedded-opentype'),
-         url('fonts/radiance-semibold.woff') format('woff'),
-         url('fonts/radiance-semibold.ttf') format('truetype'),
-         url('fonts/radiance-semibold.svg#ywftsvg') format('svg');
+    src: url('http://cdn.dota2.com/apps/dota2/fonts/radiance-semibold.eot');
+    src: url('http://cdn.dota2.com/apps/dota2/fonts/radiance-semibold.eot?#iefix') format('embedded-opentype'),
+         url('http://cdn.dota2.com/apps/dota2/fonts/radiance-semibold.woff') format('woff'),
+         url('http://cdn.dota2.com/apps/dota2/fonts/radiance-semibold.ttf') format('truetype'),
+         url('http://cdn.dota2.com/apps/dota2/fonts/radiance-semibold.svg#ywftsvg') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -79,7 +79,7 @@ div.Container.RepeatY, div.Container.RepeatY .Inner
 
 #KeyArt, #KeyArt .Inner
 {
-    background-image: url( 'images/keyart.png' );
+    background-image: url( 'http://cdn.dota2.com/apps/dota2/images/720/keyart.png' );
     background-color: #101622;
     background-size: 1610px 676px;
     height: 676px;
@@ -100,7 +100,7 @@ div.Container.RepeatY, div.Container.RepeatY .Inner
 h1
 {
     font-family: 'Radiance';
-    font-size: 71px;
+    font-size: 72px;
     color: #ED3B1C;
     letter-spacing: 8px;
     font-weight: normal;
@@ -181,11 +181,44 @@ a, a:visited, a:active
     padding-bottom: 4px;
     margin-top: -10px;
     display: block;
+    font-weight: normal;
+    font-family: 'Radiance';
+    color: #E0E0E0;
 }
+
+b span.Reworked
+{
+	padding-left: 5px;
+	color: #FF5307;
+}
+
+b span.New
+{
+	padding-left: 5px;
+	color: #36D15E;
+}
+
+b span.Scepter
+{
+	padding-left: 5px;
+	color: #00CCFF;
+}
+
+b span.Captains
+{
+	padding-left: 5px;
+	color: #36D15E;
+}
+
 
 #Heroes ul, #Items ul
 {
     padding-bottom: 30px;
+}
+
+#Items strong
+{
+    font-size: 18px;
 }
 
 #Header p
@@ -194,18 +227,18 @@ a, a:visited, a:active
     line-height: 48px;
 }
 
-div.Container.BGStyle0
+div.Container.BGStyle1
 {
     border-top: 2px solid #232323;
 }
 
-div.Container.BGStyle0, div.Container.BGStyle0 .Inner
+div.Container.BGStyle1, div.Container.BGStyle1 .Inner
 {
-    background-image: url( 'images/featured.jpg' );
+    background-image: url( 'http://cdn.dota2.com/apps/dota2/images/720/featured.jpg' );
     background-color: #151618;
 }
 
-.BGStyle0 .Inner
+.BGStyle1 .Inner
 {
     padding-top: 80px;
     padding-bottom: 40px;
@@ -227,25 +260,41 @@ h2
     font-weight: normal;
 }
 
-h3
+h3, #Items b:nth-of-type(1)
 {
     font-family: 'Radiance';
     font-weight: normal;
-    font-size: 22px;
-    letter-spacing: 1px;
+    font-size: 32px;
+    letter-spacing: 3px;
     color: #ED3B1C;
     text-shadow: 1px 1px 1px #000000;
 }
 
-div.Container.BGStyle1, div.Container.BGStyle1 .Inner
+h4
+{
+    font-family: 'Radiance-SemiBold';
+    font-weight: normal;
+    letter-spacing: 1px;
+    font-size: 20px;
+    color: #FFFFFF;
+}
+
+#Items b:nth-of-type(1)
+{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+
+div.Container.BGStyle2, div.Container.BGStyle2 .Inner
 {
     background-position: center 0px, center 0px;
-    background-image: url( 'images/list_top.jpg' ), url( 'images/list.jpg' );
+    background-image: url( 'http://cdn.dota2.com/apps/dota2/images/720/list_top.jpg' ), url( 'http://cdn.dota2.com/apps/dota2/images/720/list.jpg' );
     background-color: #0D0E0F;
     background-repeat: no-repeat, repeat-y;
 }
 
-.BGStyle1 .Inner
+.BGStyle2 .Inner
 {
     padding-top: 80px;
     padding-bottom: 40px;
@@ -274,7 +323,7 @@ ul
 
 #Footer, #Footer .Inner
 {
-    background-image: url( 'images/footer.jpg' );
+    background-image: url( 'http://cdn.dota2.com/apps/dota2/images/720/footer.jpg' );
     background-color: #000000;
 }
 

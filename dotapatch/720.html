@@ -1,0 +1,1867 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<link rel="shortcut icon" href="/favicon.ico">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=9">
+	<link href="http://www.dota2.com/public/css/global.css?v=b4837968" rel="stylesheet" type="text/css">
+<link href="http://www.dota2.com/public/css/global_english.css?v=BpCw4C6e29Gp" rel="stylesheet" type="text/css">
+<link href="http://www.dota2.com/public/css/publicheader.css?v=dxJw6XR3DWJ3" rel="stylesheet" type="text/css">
+<link href="css/720.css" rel="stylesheet" type="text/css" >
+	<link href="http://www.dota2.com/public/css/font_goudytrajan.css?v=b4837968" rel="stylesheet" type="text/css">
+	<script type="text/javascript" async="" src="http://www.google-analytics.com/ga.js"></script><script type="text/javascript" src="http://cdn.dota2.com/apps/dota2/javascript/static/jquery-1.7.1.min.js?v=4837968"></script>
+<script type="text/javascript">$J = jQuery;</script><script type="text/javascript" src="http://steamcommunity-a.akamaihd.net/public/shared/javascript/shared_global.js?v=ZpRbqaS0j3hi&amp;l=koreana"></script>
+	<title>7.20 번역</title>
+    		
+	<script type="text/javascript">
+
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-33822635-2']);
+		_gaq.push(['_setSampleRate', '1']);		_gaq.push(['_setDomainName', 'dota2.com']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+
+	</script>
+    <script>
+        $( function () {
+            var URL = 'http://www.dota2.com/';
+            URL = URL + 'jsfeed/heropediadata?feeds=herodata,itemdata';
+            $.ajax(
+                {
+                    type:'GET',
+                    cache:true,
+                    url: URL,
+                    dataType:'jsonp',
+                    success: function( data )
+                    {
+                        g_HeroData = data['herodata'];
+                        g_ItemData = data['itemdata'];
+                        formatHeroAndItemNotes();
+                    }
+                }
+            );
+        } );
+
+        var g_HeroData = false;
+        var g_ItemData = false;
+        function formatHeroAndItemNotes()
+        {
+            $.each( ['items','heroes'], function( i, type ) {
+                var containers = ['#Heroes','#Items'];
+                for ( i = 0; i < containers.length; i++ )
+                {
+                    container = containers[i];
+                    var strContents = $(container).html();
+                    if ( strContents )
+                    {
+                        var foundTags = strContents.match( /\[\[[A-Za-z-_:]+\]\]/g );
+                        if ( foundTags )
+                        {
+                            for ( x = 0; x < foundTags.length; x++ )
+                            {
+                                tag = foundTags[x];
+                                tag = tag.substring( 2, tag.length-2 );
+                                var strHTMLNameSuffix = '';
+                                if ( tag.includes( ':Reworked' ) )
+                                {
+                                    tag = tag.replace( ':Reworked', '' );
+                                    strHTMLNameSuffix += '<span class="Reworked">' + ( container == '#Items' ? 'Item Reworked' : 'Ability Rework' ) + '</span>';
+                                }
+                                if ( tag.includes( ':new' ) )
+                                {
+                                    tag = tag.replace( ':new', '' );
+                                    strHTMLNameSuffix += '<span class="New">New Item</span>';
+                                }
+                                if ( tag.includes( ':captains' ) )
+                                {
+                                    tag = tag.replace( ':captains', '' );
+                                    strHTMLNameSuffix += '<span class="Captains">Added to Captains Mode</span>';
+                                }
+                                if ( tag.includes( ':scepteradded' ) )
+                                {
+                                    tag = tag.replace( ':scepteradded', '' );
+                                    strHTMLNameSuffix += '<span class="Scepter">Scepter Added</span>';
+                                }
+                                if ( tag.includes( ':scepterReworked' ) )
+                                {
+                                    tag = tag.replace( ':scepterReworked', '' );
+                                    strHTMLNameSuffix += '<span class="Scepter">Scepter Reworked</span>';
+                                }
+                                bUnfound = false;
+                                if ( g_ItemData[tag] )
+                                {
+                                    path = 'items/'+tag+'_lg.png';
+                                    name = g_ItemData[tag].dname;
+                                    hw = 'width="48" height="36"';
+                                }
+                                else if ( g_HeroData[tag] )
+                                {
+                                    path = 'heroes/'+tag+'_sb.png';
+                                    name = g_HeroData[tag].dname;
+                                    hw = '';
+                                }
+                                else
+                                {
+                                    bUnfound = true;
+                                }
+                                if ( !bUnfound )
+                                {
+                                    var strHTML = '<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/'+path+'" '+hw+' /></div><br style="clear: left;"/>';
+                                    strHTML += '<b>' + name + ': ' + strHTMLNameSuffix + '</b>';
+                                    strContents = strContents.replace( foundTags[x], strHTML );
+                                }
+                            }
+                            $(container).html( strContents );
+                        }
+                    }
+                }
+            });
+
+            var eCount = 0;
+            $( '.ChangeDetailsExtended' ).each( function() {
+                var $extended = $( this );
+                $extended.attr( 'id', 'extended'+eCount );
+                $extended.before( '<a href="#" class="ChangeDetailsEToggle" id="eToggle'+eCount+'" onclick="$(\'#extended'+eCount+'\').show();$(this).hide();return false;">+ 세부 사항 보기</a>' );
+                $extended.html( '<a href="#" id="eToggleHide'+eCount+'" class="ChangeDetailsEToggle HideButton" onclick="$(\'#extended'+eCount+'\').hide();$(\'#eToggle'+eCount+'\').show();return false;">- 세부 사항 감추기</a>' + $extended.html() );
+                eCount++;
+            } );
+            $( '.ChangeDetailsPopup' ).each( function() {
+                var $popup = $( this );
+                var $popupHoverButton = $( '<a href="#">[?]</a>' );
+                $popup.before( $popupHoverButton );
+                $popupHoverButton.hover( function() {
+                    $popup.css( "display", "block" );
+                }, function() {
+                    $popup.css( "display", "none" );
+                });
+                $popupHoverButton.click( function() {
+                    // Suppress the click event
+                    return false;
+                });
+            } );
+        }
+    </script>
+</head>
+<body>
+	<div class="Container" id="KeyArt">
+		<div class="Inner">
+            <a href="http://www.dota2.com/"><img src="http://cdn.dota2.com/apps/dota2/images/springcleaning2016/logo.png"></a>
+		</div>
+	</div>
+
+	<a class="HiddenAnchor" name="GameplayHeader"> </a>
+	<div class="Container" id="Header">
+		<div class="Inner" style="text-align:center">
+			<h1>게임플레이 업데이트 7.20</h1>
+			<h3><a href="https://www.dota2.com/720/" target="_blank" style="
+    font-size: 22px;
+    letter-spacing: 1px;
+">원문: https://www.dota2.com/720/</a></h3>
+		</div>
+	</div>
+
+    <div class="Container RepeatY BGStyle1" id="General">
+        <div class="Inner">
+            
+					<h3>일반 변경 사항</h3>
+
+					<h4>지형 변화</h4>
+					
+					<ul>
+						<li>전장을 재작업했습니다.</li>
+					</ul>
+					
+					<h4>디나이</h4>
+					
+					<ul>
+						<li>디나이는 더 이상 디나이한 사람(의 팀)에게 25%의 경험치를 제공하지 않습니다.</li>
+						<li>크립 디나이는 이제 디나이한 사람에게 20%의 현상금을 제공합니다. <span class="ChangeDetailsPopup">근접 크립: 7-8 골드<br>원거리 크립: 9-11 골드</span></li>
+					</ul>
+					
+					<h4>순간이동</h4>
+					
+					<ul>
+						<li>순간이동 주문서를 위한 새 인벤토리 슬롯을 추가했습니다. <span class="ChangeDetailsPopup">여전히 상점에서 구입해야만 사용할 수 있습니다.</span></li>
+						<li><b>여행의 장화:</b> 더 이상 순간이동 주문서와 쿨다운을 공유하지 않습니다. 사용 시, 순간이동 주문서 쿨다운에 10초가 추가됩니다.</li>
+					</ul>
+					
+					<h4>중립 크립</h4>
+					<ul>
+						<li>중첩(스택)된 중립 크립은 중첩자에게 25% 대신 35%의 현상금을 제공합니다.</li>
+						<li>고대 크립이 아닌 중립 크립들은 이제 5% 더 많은 현상금을 제공합니다.</li>
+					</ul>
+					
+					<h4>영웅 선발</h4>
+					
+					<ul>
+						<li>일일 보너스 영웅 시스템을 삭제했습니다.</li>
+						<li>무작위(랜덤) 선발은 이제 전체 영웅 중 당신이 가장 플레이하지 않은 25명의 영웅을 제외하고 선발됩니다. <span class="ChangeDetailsPopup">무작위 선발의 보상은 그대로입니다.</span></li>
+						<li>무작위(랜덤) 선발은 팀의 첫 두 영웅 선택에서만 가능합니다.</li>						
+					</ul>
+					
+					
+					<h4>방어력</h4>
+					<ul>
+						<li>방어력 공식이 변경되었습니다: ( 0.052 * 방어력 ) / ( 0.9 + 0.048 * 방어력 )</li>
+						<li class="highlight">새 공식에 맞춰 기존의 방어력 수치를 조절했습니다:
+							
+								<ul>
+								<blockquote>
+								<li>1차 포탑: 17 에서 12</li>
+								<li>2차 포탑: 19 에서 14</li>
+								<li>3차 포탑: 19 에서 14</li>
+								<li>4차 포탑: 29 에서 21</li>
+								<li>근접 병영: 18 에서 13</li>
+								<li>원거리 병영: 12 에서 9</li>
+								<li>고대의 요새: 18 에서 13</li>
+								<li>장식물(조각상 등): 14 에서 10</li>
+								<li>제단: 24 에서 17</li>	
+								</blockquote>
+								</ul>							
+						</li>
+					</ul>
+					
+					<h4>영웅 처치 보상 경험치</h4>
+					<ul>
+						<li>연속 처치는 이제 200에서 최대 1250까지의 경험치 보너스를 제공합니다.</li>
+						<li class="highlight">영웅 처치 보상 경험치 시스템을 재작업했습니다. 더 이상 팀 경험치 시스템을 포함하지 않습니다. 	
+							<div class="ChangeDetailsExtended">
+								<br>	이전:
+								<br>	
+								<br>	===
+								<br>	처치에 참여한 영웅의 수당 받는 경험치:
+								<br>	
+								<br>	1: DyingHeroBaseXPBounty + 20 * DyingHeroLevel + 0.138 * XPComeback
+								<br>	2: DyingHeroBaseXPBounty + 15 * DyingHeroLevel + 0.138 * XPComeback
+								<br>	3: DyingHeroBaseXPBounty + 10 * DyingHeroLevel + 0.12 * XPComeback
+								<br>	4: DyingHeroBaseXPBounty + 7 * DyingHeroLevel + 0.09 * XPComeback
+								<br>	5: DyingHeroBaseXPBounty + 5 * DyingHeroLevel + 0.072 * XPComeback
+								<br>	
+								<br>	
+								<br>	DyingHeroBaseXPBounty: 처치 보상으로 주어지는 기본 경험치
+								<br>	
+								<br>	DyingHeroLevel: 죽은 영웅의 레벨
+								<br>	
+								<br>	XPComeback: DyingHeroXP * ( EnemyTeamXP - AlliedTeamXP ) / ( EnemyTeamXP + AlliedTeamXP)
+								<br>	
+								<br>		
+								<br>	현재:
+								<br>	===
+								<br>	All: ( 40+ 0.14 * DyingHeroXP ) / # of killers
+								<br>	
+								<br>	
+							</div></li>
+					</ul>
+					
+					<h4>마나와 체력 재생</h4>
+					<ul>
+						<li>능력치에 따른 마나와 체력 재생을 재작업했습니다. 능력치는 이제 더 이상 재생 값을 배수로 늘려주지 않습니다.<br>
+						</li><li>마나 재생: 지능은 이제 0.05 마나 재생을 제공합니다.<br>
+						</li><li>마나 재생: 0.9 기본 마나 재생을 삭제했습니다. <span class="ChangeDetailsPopup" style="display: none;">이제 기본 지능에 의해 제공됩니다.</span><br>
+						</li><li>마나 재생: 기존 아이템 등에 달려있던 마나 재생 값을 새 공식에 맞게 조절했습니다.<br>
+						<div class="ChangeDetailsExtended">
+						<br>창공의 렌즈: 1.25 --> 3
+						<br>전장격노: 2.25 --> 3.75
+						<br>혈석: 2 --> 3
+						<br>혈석 충전 당 회복: 0.35 --> 1.5
+						<br>핏빛가시: 2.25 --> 5.5
+						<br>물병: 20 --> 30
+						<br>맑은 물약: 3 --> 4.5
+						<br>지구력의 북: 0.75 --> 1.5
+						<br>공명의 군도: 0.75 --> 1.25
+						<br>율의 신성한 홀: 2.25 --> 5
+						<br>마법 깃든 빗방울: 0.5 --> 0.75
+						<br>린켄의 구슬: 2.25 --> 5
+						<br>연꽃 구슬: 1.75 --> 4
+						<br>용기의 메달: 0.5 --> 0.75
+						<br>유성 망치: 1.5 --> 3
+						<br>네크로노미콘 1: 1 --> 2
+						<br>네크로노미콘 2: 1.25 --> 2.5
+						<br>네크로노미콘 3: 1.5 --> 3
+						<br>망각의 지팡이: 0.75 --> 1.25
+						<br>증오의 꽃가지: 2.25 --> 5.5
+						<br>인내의 반지: 1.5 --> 2
+						<br>재생의 구슬: 5 --> 12
+						<br>바실리우스의 반지: 0.5 --> 0.75
+						<br>현자의 가면: 0.5 --> 0.75
+						<br>바이스의 낫: 2.25 --> 9
+						<br>태양의 문장: 1 --> 1.5
+						<br>혼령 단지: 1 --> 1.5
+						<br>혼의 항아리: 1 --> 1.5
+						<br>블라디미르의 공물:	1 --> 1.75
+						<br>공허석:	1 --> 1.75
+						<br>
+						<br>제단: 30 --> 50
+						<br>
+						<br>능력:
+						<br>화학적 분노: 3/7.5/12 --> 4/10/16
+						<br>신비한 오라 (자신): 1.8/2.6/3.4/4.2 --> 2.4/4.4/6.4/8.4
+						<br>신비한 오라 (아군): 0.8/1/1.2/1.4 --> 1.2/1.7/2.2/2.7
+						<br>고원 트롤 사제: 1.5 --> 2.5
+						<br>죽음의 파동: 2.25/2.5/2.75/3 --> 3/4/5/6
+						<br>
+						<br>특성:
+						<br>폭풍령: 1.75 --> 3
+						<br>가시멧돼지: 2 --> 3
+						<br>스벤: 2 --> 3
+						<br>천갑검사: 1.5 --> 3
+						<br>우르사: 1.75 --> 3
+						<br>바람순찰자: 1.75 --> 3
+						<br>용기사: 2 --> 3
+						<br>기술단: 4 --> 6
+						<br>도끼전사: 3 --> 4
+						<br>전능기사: 3 --> 5
+						</div></li>
+
+						<li>체력 재생: 힘은 이제 0.1 체력 재생을 제공합니다.<br>
+						</li><li>체력 재생: 기본 체력 재생이 1.5로 감소했습니다.  <span class="ChangeDetailsPopup">이제 기본 힘에 의해 제공됩니다.</span><br>
+						</li><li>체력 재생: 기존 아이템 등에 달려있던 체력 재생 값을 새 공식에 맞게 조절했습니다.<br>
+						<div class="ChangeDetailsExtended">
+						<br>심연의 검: 7 --> 10
+						<br>모르디기안의 완갑: 4 --> 5
+						<br>전장격노: 6 --> 7.5
+						<br>물병: 40 --> 50
+						<br>핏빛 수호: 6 --> 7
+						<br>마력 깃든 망고: 0.5 --> 0.6
+						<br>염동력 지팡이: 2 --> 2.5
+						<br>수호자의 경갑: 3.5 --> 4.5
+						<br>수호자의 경갑 활성화: 12 --> 16
+						<br>굳은 의지의 투구: 3 --> 3.5
+						<br>지배자의 투구: 7 --> 8.5
+						<br>도전의 두건: 6.5 --> 8
+						<br>허리케인 창: 2 --> 2.5
+						<br>린켄의 구슬: 5.5 --> 6.5
+						<br>연꽃 구슬: 5.5 --> 6.5
+						<br>메칸즘: 3.5 --> 4.5
+						<br>유성 망치: 4 --> 5
+						<br>무산의 별: 5 --> 6
+						<br>인내의 반지: 5.5 --> 6
+						<br>통찰의 파이프: 6.5 --> 8
+						<br>통찰의 파이프 오라: 2 --> 3
+						<br>재생의 구슬: 11 --> 13
+						<br>체력 반지: 5 --> 6
+						<br>재생의 반지: 1.5 --> 2
+						<br>영혼의 반지: 2 --> 2.5
+						<br>평온의 장화: 13 --> 16
+						<br>선봉 방패: 5.5 --> 7
+						<br>불화의 두건: 5 --> 6
+						<br>
+						<br>제단: 75 --> 90
+						<br>
+						<br>능력:
+						<br>화학적 분노: 40/55/70 --> 50/75/100
+						<br>용의 혈통: 4/6/8/10 --> 4/7/10/13
+						<br>불굴의 의지: 30/35/40/45 --> 30/40/50/60
+						<br>고반응성 기계갑옷: 1/1.15/1.3/1.45 --> 1/1.2/1.4/1.6
+						<br>내면의 활력 추가 회복량: 22/30/38/46% --> 20/40/60/80% 
+						<br>내면의 활력 회복량: 6/8/10/12% --> 5/10/15/20% 
+						<br>죽음의 파동 체력 재생: 2/3/4/5 --> 2/3.5/5/6.5
+						<br>냉기의 은총: 10 --> 15
+						<br>
+						<br>특성:
+						<br>언다잉: 8 --> 10
+						<br>리키: 5 --> 6
+						<br>슬라다: 5 --> 6
+						<br>악령: 5 --> 6
+						<br>컨카: 10 --> 12
+						<br>영혼 파괴자: 10 --> 12
+						<br>이오: 15 --> 16
+						<br>지하군주: 20 --> 25
+						<br>도끼전사: 20 --> 25
+						<br>가시멧돼지: 20 --> 25
+						<br>모래 제왕: 35 --> 50
+						</div></li>
+					</ul>
+					
+					<h4>속박</h4>
+					<ul>
+						<li><b>순간이동 주문서:</b> 이제 속박에 의해 취소될 수 있습니다.</li>
+						<li class="highlight">서로 다른 속박 기술 간의 불일치를 수정했습니다.:
+							
+								<ul>
+								<blockquote>
+								<li>기술단의 정지 덫은 이제 현시의 시야를 제공합니다.</li>
+								<li>아래의 속박 기술은 더 이상 정신집중 기술과 대상의 현재 동작을 방해하지 않습니다: 어둠트롤 소환사 올가미, 화염 사슬, 나가 세이렌 그물 던지기, 수정의 여인 동상, 휘감는 발톱, 자연의 눈속임, 과대 성장</li>
+								</blockquote>
+								</ul>							
+						</li>
+					</ul>	
+					
+					<h4>가르기와 범위 피해</h4>
+					<ul>
+						<li>가르기 피해는 이제 물리 타입이며 적의 방어력 수치에 의해 감소될 수 있습니다.</li>
+						<li>가르기 기술들의 피해 수치가 재산정되었습니다.</li>
+						<li>가르기 범위가 증가했습니다. 거리: 625에서 650, 최종 너비: 330에서 360 <br>영향받는 기술: 강력한 가르기, 강화, 전장격노, 관련 특성들</li><br>
+						<li><b>암살 기사:</b> 사이오닉 검은 이제 환영을 타격해서 대상의 뒤에 있는 유닛에게 대미지를 줄 수 있습니다.</li>
+						<li>환영의 받는 피해가 처리되는 방식을 바꾸었습니다; 이제 최종 단계에서 계산됩니다. <span class="ChangeDetailsPopup">즉, 사이오닉 검과 같은 스킬이 타격 시 환영의 받는 피해를 포함한 피해를 주지 않습니다.</span></li>
+						<br><br>
+						<li>범위 피해가 주문 흡혈과 주문 증폭에 영향받던 현상을 수정하였습니다.</li>
+						<li>범위 피해가 방어력 타입을 무시하던 현상을 수정하였습니다.</li>
+						<li>고대 흑룡의 범위 공격이 마법 피해에서 물리 피해로 변경되었습니다.</li>
+						<li>고대 흑룡의 범위 공격은 이제 250 효과 범위 내에서 최대 피해를 입힙니다. <span class="ChangeDetailsPopup">이전에는 150 거리에서 100%, 225 거리에서 75%, 300 거리에서 50%을 주었습니다.</span></li>
+						<li>용기사 (궁극기의) 범위 피해에도 비슷한 변경사항이 적용되었습니다.</li>
+					</ul>
+					
+					<h4>주문 면역과 해제</h4>
+					<ul>
+						<li>아래의 기술들은 더 이상 주문 면역을 관통하지 않습니다: 아베르누스의 저주, 산성 스프레이, 피의 분노, 갈증, 고룡 형상, 늑대인간 소환 늑대의 마비, 땅울리기, 휘감는 발톱, 새끼거미의 독침, 닻 강타, 자연의 눈속임, 공포의 파동, 맹독사의 독침, 벌레 무리, 저주의 마법진 디버프, 유령 크립의 서리 공격, 자연의 분노, 황천 와드의 마나 역재생, 체력 흡수, 태고의 표효 부수적 넉백, 영혼의 진혼곡, 기계 행진 충돌 폭발, 위축의 오라, 묘비, 살덩이 골렘, 복제의 벽 둔화, 나가 세이렌 그물 던지기, 어둠트롤 소환사의 올가미, 도끼 던지기, 자연의 질서, 죽음의 파동 투사체, 암살, 시바의 은총 오라, 돌격 흉갑 오라, 포악한 들새의 회오리 폭풍 오라, 독사의 구슬</li>
+						<br>
+						<li><b>칠흑왕의 지팡이:</b> 조합법 가격이 1375에서 1450으로 증가했습니다.</li>
+						<br>
+						<li>독침은 이제 해제될 수 있습니다.</li>
+						<li>저주술(헥스)는 이제 강한 해제로 정화될 수 있습니다.</li>
+						<br>
+					</ul>
+					
+					<h4>포탑과 구조물</h4>
+					<ul>
+						<li class="highlight">포탑은 이제 근처의 적 영웅에 따라 추가 방어력을 얻지 않습니다. 포탑의 체력이 다음과 같이 증가했습니다:
+							
+								<ul>
+								<blockquote>
+								<li>1차 포탑의 체력이 1600에서 1800으로 증가했습니다.</li>
+								<li>2차 포탑의 체력이 1600에서 1900으로 증가했습니다.</li>
+								<li>3차 포탑의 체력이 1600에서 2000으로 증가했습니다.</li>
+								<li>4차 포탑의 체력이 1600에서 2100으로 증가했습니다.</li>
+								</blockquote>
+								</ul>							
+						</li>
+
+						<li>근접 병영의 체력이 2000에서 2200으로 증가했습니다.</li>
+						<li>원거리 병영의 체력이 1200에서 1300으로 증가했습니다.</li>
+						<li>고대의 요새의 체력이 4250에서 4500으로 증가했습니다.</li>
+					</ul>
+					
+					<h4>기타 변경 사항</h4>
+					<ul>
+						<li>낮/밤의 주기가 4분에서 5분으로 증가했습니다.</li>
+						<br>
+						<li>스캔은 더 이상 로샨 굴 안의 적을 무시하지 않습니다.</li>
+						<br>
+						<li>최대 공격 속도가 600에서 700으로 증가했습니다.</li>
+						<br>
+						<li>기본 오라의 범위가 900에서 1200으로 증가했습니다. <span class="ChangeDetailsPopup">현시의 보석, 심장마비의 오라, 자연의 질서 제외.</span></li>
+						<br>
+						<li>레인에 따른 크립 이동 속도 조절을 삭제했습니다. <span class="ChangeDetailsPopup">이전에는 게임 시간 7.5분 전까지 각 레인의 크립 속도가 달랐습니다.</span></li>
+						<br>
+						<li>한 팀의 모든 병영이 파괴되었을 시 재생되는 새 음향 효과를 추가했습니다.</li>
+						<li>사이드/비밀 상점에서 파는 아이템 목록은 이제 전체 상점 UI에서 강조 표시됩니다.</li>
+						<li>와드를 설치하는 동안 다른 와드의 효과 범위가 표시됩니다.</li>
+						<br>
+						<li>새로운 효과인 구속(leash)을 추가했습니다. 구속된 유닛은 속박(root)된 유닛이 순간이동이나 이동 관련 스킬을 사용하지 못하는 것과 같은 효과을 공유하지만 일반적인 이동으로 빠져나갈 수 있습니다. 다음과 같은 스킬이 구속 효과를 가집니다: 뛰어들기, 꿈의 고리, 영혼결속</li>
+						<br>
+						<li>자신에게 주는 피해는 더 이상 맑은 물약, 물병, 점멸 등을 무력화시키지 않습니다.</li>
+						<br>
+						<li>흡혈은 이제 대상의 현재 HP에 따라 제한되지 않고 주는 피해 그대로 적용됩니다.</li>
+						<br>
+						<li>이제 도발에 걸린 동안 배낭을 사용할 수 없습니다.</li>
+						<br>
+						<li>다음의 이동 속도 관련 특성들이 감소했습니다: 아바돈 (25->20), 도끼전사 (40->30), 악몽의 그림자 (65->50), 박쥐기수 (50->40), 현상금 사냥꾼 (25->20), 대즐 (50->40), 요술사 (25->20), 군단 사령관 (50->40), 리치 (25->20), 나가 세이렌 (25->20), 자연의 예언자 (35->25), 밤의 추격자 (45->40), 닉스 암살자 (35->30), 오거 마법사 (90->75), 예지자 (65->50), 외계 침략자 (35->30), 천갑검사 (25->20), 퍼그나 (25->20), 모래 제왕 (25->20), 그림자 악마 (35->30), 하늘분노 마법사 (25->20), 기술단 (60->50), 파도사냥꾼 (25->20), 땜장이 (40->30), 지하군주 (30->25)</li>
+						<br>
+						<li>지능 영웅들의 힘 상승량이 0.2 증가했습니다. <span class="ChangeDetailsPopup" style="display: none;">악몽의 그림자, 외계 침략자, 고통의 여왕, 오거 마법사, 제우스 제외.</span></li>
+						<br>
+						<li>이제 관찰 와드나 감시 와드 제거시 팀 메시지가 출력됩니다.</li>
+						<li>레벨 1/2/3/4의 부활 시간이 5/7/9/13에서 6/8/10/14로 증가했습니다.</li>
+						<li>7.00 패치에서 적용되었던 글로벌 회전 속도 변경을 취소했습니다. <span class="ChangeDetailsPopup">이전: 최대 회전 속도가 15% 증가했습니다.</span></li>
+						<li>소수점 이하 2자리의 능력치 증가값은 이제 반올림됩니다.</li>
+						<li>제단의 시전 능력은 이제 추가로 초당 2% 체력/마나를 재생합니다. <span class="ChangeDetailsPopup">능력치가 더 이상 재생을 늘려주지 않기 때문입니다.</span></li>
+					</ul>        </div>
+    </div>
+
+    <div class="Container RepeatY BGStyle2" id="Items">
+         <div class="Inner">
+            
+					<b>아이템 변경 사항</b>
+					<br><br>
+					<ul>
+						<li class="highlight">모든 아이템에 붙은 이동 속도 보너스가 재조정되었으며 고정된 숫자 대신 퍼센트로 변경되었습니다. <span class="ChangeDetailsPopup">아래의 아이템들은 (신발 -5와 율 -10을 제외하면) 300의 이동 속도 기준으로 예전과 비슷한 효과를 가지게 조정되었습니다.</span>
+							
+								<ul>
+								<blockquote>
+								<li>	속력의 장화: 15%</li>
+								<li>	능력의 장화: 15%</li>
+								<li>	위상변화 장화: 15%</li>
+								<li>	신비의 장화: 15%</li>
+								<li>	수호자의 경갑: 17%</li>
+								<li>	평온의 장화 활성화: 28%</li>
+								<li>	평온의 장화 비활성화: 20%</li>
+								<li>	여행의 장화: 32%</li>
+								<br>
+								<li>	지구력의 북: 6%</li>
+								<li>	율의 신성한 홀: 6%</li>
+								<li>	혼령 단지: 6%</li>
+								<li>	바람결: 6%</li>
+								</blockquote>
+								</ul>							
+						</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/phase_boots_lg.png" width="48" height="36"></div><br style="clear: left;"><b>위상변화 장화: <span class="Reworked">아이템이 재설계되었습니다.</span></b>
+					<ul>
+						<li>시전 기술이 없어지도록 재설계되었습니다. 이제 기본적으로 적 공격 시 이동 속도 보너스, 충돌 무시, 회전 속도를 제공합니다. 버프는 영웅이 다른 곳으로 이동해 공격을 멈추면 사라집니다. 공격을 인식하는 최대 사거리는 900입니다.</span> 이 버프에는 쿨다운이 없고 0.5초간 지속됩니다.</li>
+						<li>원거리 영웅이 착용 시의 이동 속도 보너스가 13%에서 10%로 감소했습니다.</li>
+						<li class="highlight">재설계된 위상변화 장화 조합법<br>
+								<br>이전 조합법:
+								<br>===
+								<br>요구 아이템: 
+								<br> 장화 (500)
+								<br> 2x 갈귀발톱 (860)
+								<br> 총 가격: 1360
+								<br>
+								<br>능력치:
+								<br> 이동 속도 +50
+								<br> 피해 +24
+								<br>
+								<br>새 조합법:
+								<br>===
+								<br>요구 아이템: 
+								<br> 장화 (500)
+								<br> 사슬 갑옷 (550)
+								<br> 가속의 장갑 (500)
+								<br> 총 가격: 1550
+								<br>
+								<br>능력치:
+								<br> 이동 속도 +15%
+								<br> 방어력 +5
+								<br> 공격 속도 +25
+							</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/power_treads_lg.png" width="48" height="36"></div><br style="clear: left;"><b>능력의 장화: </b>
+					<ul>
+						<li>이제 아이템 조합에 이제 가속의 장갑 대신 갈퀴발톱이 필요합니다. 공격 속도 대신 피해 +16을 제공합니다.</li>
+						<li>능력치 보너스가 10에서 12로 증가했습니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/tranquil_boots_lg.png" width="48" height="36"></div><br style="clear: left;"><b>평온의 장화: </b>
+					<ul>
+						<li>더 이상 크립 공격 시 비활성화되지 않습니다.</li>
+					</ul>
+					<br><br>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/sange_lg.png" width="48" height="36"></div><br style="clear: left;"><b>산화: </b>
+						<ul><li>이제 중상 대신 상태 저항력 +12%를 제공합니다.</li>
+						</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/heavens_halberd_lg.png" width="48" height="36"></div><br style="clear: left;"><b>천상의 미늘창: </b>
+					<ul><li>이제 중상 대신 상태 저항력 +14%를 제공합니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/sange_and_yasha_lg.png" width="48" height="36"></div><br style="clear: left;"><b>산화와 야차: </b>
+					<ul><li>이제 중상 대신 상태 저항력 +16%를 제공합니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/sange_lg.png" width="48" height="36"></div><br style="clear: left;"><b>산화: </b>
+					<ul><li>조합법 가격이 700에서 650으로 감소했습니다.</li>
+					</ul>				
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/yasha_lg.png" width="48" height="36"></div><br style="clear: left;"><b>야차: </b>
+					<ul><li>조합법 가격이 700에서 650으로 감소했습니다.</li>
+					</ul>				
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/kaya_lg.png" width="48" height="36"></div><br style="clear: left;"><b>카야: </b>
+					<ul><li>조합법 가격이 500에서 650으로 증가했습니다.</li>
+					</ul>				
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/yasha_and_kaya_lg.png" width="48" height="36"></div><br style="clear: left;"><b>야차와 카야: <span class="New">새 아이템</span></b>
+						<ul><li>새 아이템: 야차와 카야를 추가했습니다.</li>
+						</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/kaya_and_sange_lg.png" width="48" height="36"></div><br style="clear: left;"><b>카야와 산화: <span class="New">새 아이템</span></b>
+						<ul><li>새 아이템: 카야와 산화를 추가했습니다.</li>
+						</ul>
+
+					
+					<li>산화/야차/카야와 산화와 야차의 능력치를 재조정했습니다.<ul>
+								<br>산화:
+								<br>===
+								<br>힘 +16
+								<br>상태 저항력 +12%
+								<br>피해 +8
+								<br>
+								<br>야차:
+								<br>===
+								<br>민첩 +16
+								<br>공격 속도 +12
+								<br>이동 속도 +8%
+								<br>
+								<br>카야:
+								<br>===
+								<br>지능 +16
+								<br>마나 소모 감소 +12%
+								<br>주문 증폭 +8%
+								<br>
+								<br>산화와 야차:
+								<br>===
+								<br>힘 +16
+								<br>민첩 +16
+								<br>공격 속도 +16
+								<br>상태 저항력 +16%
+								<br>피해 +12
+								<br>이동 속도 +12%
+								<br>
+								<br>야차와 카야
+								<br>===
+								<br>지능 +16
+								<br>민첩 +16
+								<br>공격 속도 +16
+								<br>마나 소모 감소 +16%
+								<br>주문 증폭 +12%
+								<br>이동 속도 +12%
+								<br>
+								<br>카야와 산화
+								<br>===
+								<br>지능 +16
+								<br>힘 +16
+								<br>마나 소모 감소 +16%
+								<br>상태 저항력 +16%
+								<br>주문 증폭 +12%
+								<br>공격 속도 +12
+					</ul>
+							</li>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/ring_of_tarrasque_lg.png" width="48" height="36"></div><br style="clear: left;"><b>타라스크의 반지: <span class="New">새 아이템</span></b>
+					<ul>
+						<li>새 기본 아이템: 타라스크의 반지를 추가했습니다. 가격: 700골드. 체력 재생 +3.75, 체력 +150 제공. 타라스크의 심장과 Holy Locket으로 업그레이드 가능. 
+					</li></ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/holy_locket_lg.png" width="48" height="36"></div><br style="clear: left;"><b>Holy Locket: <span class="New">새 아이템</span></b>
+					<ul>
+						<li>새 아이템: Holy Locket을 추가했습니다. 패시브. 제공하는 모든 힐과 체력 재생이 25% 증가합니다. 
+								<br>
+								<br>요구 아이템: 
+								<br>	    공허석 (850)
+								<br>	    타라스크의 반지 (700)
+								<br>	    망토 (550)
+								<br>	    조합법 (550) 
+								<br>	    총 가격: 2650
+								<br>
+								<br>	    능력치:
+								<br>	    체력 +200
+								<br>	    체력 재생 +4
+								<br>	    마나 재생 +3
+								<br>	    마법 저항력 +15%
+							</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/solar_crest_lg.png" width="48" height="36"></div><br style="clear: left;"><b>태양의 문장: <span class="Reworked">아이템이 재설계되었습니다.</span></b>
+					<ul>
+						<li>조합법과 능력치가 개편되었습니다.
+						<br>
+						<br>요구 아이템:
+						<br>용기의 문장 (1175)
+						<br>궁극구 (2150)
+						<br>바람결 (250)
+						<br>조합법 (300)
+						<br>총 가격: 3875
+						<br>
+						<br>능력치:
+						<br>모든 능력치 +10
+						<br>방어력 +12
+						<br>이동 속도 +6%
+						<br>마나 재생 +1.5
+						<br>
+						<br>시전 기술: 태양의 문장으로 얻는 방어력 +12(만)을 제거하고 아군에게 공격 속도 +70, 이동 속도 +10%, 방어력 +12를 부여합니다. 또는 적에게 시전시 공격 속도 -70, 이동 속도 10%, 방어력 -12를 적용됩니다.<span class="ChangeDetailsPopup">시전 시 태양의 문장으로 얻는 방어력 +12만을 제거합니다.</span>
+						</li>
+					</ul>	
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/crown_lg.png" width="48" height="36"></div><br style="clear: left;"><b>Crown: <span class="New">새 아이템</span></b>
+					<ul>
+						<li>새 기본 아이템: Crown을 추가했습니다. 모든 능력치 +4, 450골드. (사이드 상점에서 구입 가능). 기존의 전투 팔찌, 망령의 고리, 공허 부적으로 조합하던 아이템 대신에 사용됩니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/ring_of_aquila_lg.png" width="48" height="36"></div><br style="clear: left;"><b>아퀼라의 반지: </b>
+					<ul><li>아퀼라의 반지는 게임에서 삭제되었습니다.</li>
+					</ul>
+					<br>
+					<br>
+					
+					<ul>
+						<li>전투 팔찌, 망령의 고리, 공허 부적은 이제 다른 아이템으로 업그레이드 할 수 없습니다.</li>
+						<li>전투 팔찌/공허 부적/망령의 고리 조합법 가격이 165에서 210으로 증가했습니다.</li>
+						<li>전투 팔찌/공허 부적/망령의 고리가 주는 주 능력치가 +7에서 +8로 증가했습니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/bracer_lg.png" width="48" height="36"></div><br style="clear: left;"><b>전투 팔찌: </b>
+					<ul><li>이제 마법 저항력 +6%를 제공합니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/wraith_band_lg.png" width="48" height="36"></div><br style="clear: left;"><b>망령의 고리: </b>
+					<ul><li>이제 공격 속도 +8을 제공합니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/null_talisman_lg.png" width="48" height="36"></div><br style="clear: left;"><b>공허 부적: </b>
+					<ul><li>이제 주문 증폭 +3%를 제공합니다.
+						<br>
+						<br>	요약:
+						<br>	===
+						<br>	망령의 고리:
+						<br>	민첩 +8
+						<br>	힘 +3
+						<br>	지능 +3
+						<br>	공격 속도 +8
+						<br>	
+						<br>	전투 팔찌:
+						<br>	힘 +8
+						<br>	민첩 +3
+						<br>	지능 +3
+						<br>	마법 저항력 +6%
+						<br>	
+						<br>	공허 부적:
+						<br>	지능 +8
+						<br>	힘 +3
+						<br>	민첩 +3
+						<br>	주문 증폭 +3%</li>
+					</ul>
+					<br>
+					<br>
+					
+					
+					<ul>
+						<li>전투 팔찌, 망령의 고리, 공허 부적을 사용하는 다음의 조합법들이 변경되었습니다:</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/hurricane_pike_lg.png" width="48" height="36"></div><br style="clear: left;"><b>허리케인 창: </b>
+					<ul><li>이제 망령의 고리 대신 450골드의 조합법을 사용합니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/dagon_lg.png" width="48" height="36"></div><br style="clear: left;"><b>다곤: </b>
+					<ul>
+					<li>조합법이 변경되었습니다.
+					<div class="ChangeDetailsExtended">
+					<br>	이전 조합법:
+					<br>	====
+					<br>	
+					<br>	요구 아이템:
+					<br>	--
+					<br>	마법의 지팡이 1x (1000)
+					<br>	공허 부적 1x (465)
+					<br>	조합법 (1250)
+					<br>	총 가격:  2715 (레벨 1)
+					<br>	
+					<br>	
+					<br>	능력치:
+					<br>	--
+					<br>	+18/21/24/27/30 지능
+					<br>	+3 힘
+					<br>	+3 민첩
+					<br>	
+					<br>	
+					<br>	
+					<br>	새 조합법:
+					<br>	====
+					<br>	
+					<br>	요구 아이템:
+					<br>	--
+					<br>	마법의 지팡이 1x (1000)
+					<br>	Crown 1x (450)
+					<br>	조합법 (1250)
+					<br>	총 가격: 2700 (레벨 1)
+					<br>	
+					<br>	
+					<br>	능력치:
+					<br>	--
+					<br>	+18/21/24/27/30 지능
+					<br>	+5 힘
+					<br>	+5 민첩
+					</div></li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/veil_of_discord_lg.png" width="48" height="36"></div><br style="clear: left;"><b>불화의 두건: </b>
+					<ul><li>조합법이 변경되었습니다.
+					<div class="ChangeDetailsExtended">
+					<br>	이전 조합법:
+					<br>	====
+					<br>	
+					<br>	요구 아이템:
+					<br>	--
+					<br>	굳은 의지의 투구 1x (900)
+					<br>	공허 부적 2x (930)
+					<br>	조합법 (500)
+					<br>	총 가격: 2330
+					<br>	
+					<br>	
+					<br>	능력치:
+					<br>	--
+					<br>	지능 +14
+					<br>	힘 +6
+					<br>	민첩 +6
+					<br>	방어력 +6
+					<br>	체력 재생 +5
+					<br>	
+					<br>	
+					<br>	
+					<br>	새 조합법:
+					<br>	====
+					<br>	
+					<br>	요구 아이템:
+					<br>	--
+					<br>	굳은 의지의 투구 1x (900)
+					<br>	Crown 1x (450)
+					<br>	조합법 (700)
+					<br>	총 가격: 2050
+					<br>	
+					<br>	
+					<br>	능력치:
+					<br>	--
+					<br>	지능 +15
+					<br>	힘 +6
+					<br>	민첩 +6
+					<br>	방어력 +6
+					<br>	체력 재생 +5
+					</div></li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/ancient_janggo_lg.png" width="48" height="36"></div><br style="clear: left;"><b>지구력의 북: </b>
+					<ul><li>조합법이 변경되었습니다.
+					<div class="ChangeDetailsExtended">
+					<br>	이전 조합법:
+					<br>	====
+					<br>	
+					<br>	요구 아이템:
+					<br>	--
+					<br>	전투 팔찌 1x (465)
+					<br>	현자의 가면 1x (325)
+					<br>	바람결 1x (250)
+					<br>	조합법 (575)
+					<br>	총 가격: 1615
+					<br>	
+					<br>	
+					<br>	능력치:
+					<br>	--
+					<br>	힘 +7
+					<br>	민첩 +3
+					<br>	지능 +6
+					<br>	마나 재생 +0.75
+					<br>	
+					<br>	
+					<br>	
+					<br>	새 조합법:
+					<br>	====
+					<br>	
+					<br>	요구 아이템:
+					<br>	--
+					<br>	Crown 1x (450)
+					<br>	현자의 가면 1x (325)
+					<br>	바람결 1x (250)
+					<br>	조합법 (500)
+					<br>	총 가격: 1525
+					<br>	
+					<br>	
+					<br>	능력치:
+					<br>	--
+					<br>	힘 +6
+					<br>	민첩 +6
+					<br>	지능 +6
+					<br>	마나 재생 +1.5 (새 마나 재생 공식 적용값입니다.)
+					</div></li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/rod_of_atos_lg.png" width="48" height="36"></div><br style="clear: left;"><b>에이토스의 마법봉: </b>
+					<ul><li>조합법이 변경되었습니다.
+					<div class="ChangeDetailsExtended">
+					<br>	이전 조합법:
+					<br>	====
+					<br>	
+					<br>	요구 아이템:
+					<br>	--
+					<br>	전투 팔찌 2x (930)
+					<br>	마법의 지팡이 1x (1000)
+					<br>	조합법 (1100)
+					<br>	총 가격: 3030
+					<br>	
+					<br>	
+					<br>	
+					<br>	능력치:
+					<br>	--
+					<br>	힘 +15
+					<br>	민첩 +6
+					<br>	지능 +20
+					<br>	
+					<br>	
+					<br>	
+					<br>	새 조합법:
+					<br>	====
+					<br>	
+					<br>	요구 아이템:
+					<br>	--
+					<br>	Crown 2x (900)
+					<br>	마법의 지팡이 1x (1000)
+					<br>	조합법 (850)
+					<br>	총 가격: 2750
+					<br>	
+					<br>	
+					<br>	능력치:
+					<br>	--
+					<br>	힘 +12
+					<br>	민첩 +12
+					<br>	지능 +20
+					</div></li>
+					</ul>
+					<br>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/ring_of_basilius_lg.png" width="48" height="36"></div><br style="clear: left;"><b>바실리우스의 반지: </b>
+					<ul><li>마나 재생이 0.5에서 0.65로 증가했습니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/bloodstone_lg.png" width="48" height="36"></div><br style="clear: left;"><b>혈석: </b>
+					<ul>
+						<li>더 이상 간편 디나이를 제공하지 않습니다.</li>
+						<li>더 이상 부활 쿨다운을 줄여주지 않습니다.</li>
+						<li>이제 기본적으로 마나 재생을 두 배로 늘려줍니다.</li>
+						<li>12 충전으로 시작하고 영웅 처치 시 1 충전을 획득합니다. 사망 시 3 충전을 잃습니다.</li>
+						<li>충전 당 0.25의 체력과 마나 재생이 추가됩니다.</li>
+						<li>새 시전 기술이 추가되었습니다. (2초간) 현재 마나의 60%를 체력으로 바꿉니다. 쿨다운: 250 <span class="ChangeDetailsPopup">재생에는 2초가 걸립니다.</span></li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/aeon_disk_lg.png" width="48" height="36"></div><br style="clear: left;"><b>영겁의 원반: </b>
+					<ul>
+					<li>체력 보너스가 250에서 300으로 증가했습니다.</li>
+					<li>마나 보너스가 250에서 300으로 증가했습니다.</li>
+					<li>더 이상 기본 상태 저항력을 제공하지 않습니다.</li>
+					<li>기술 발동 시 2.5초의 버프 지속시간 동안 상태 저항력 +50%을 제공합니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/satanic_lg.png" width="48" height="36"></div><br style="clear: left;"><b>사탄의 손아귀: </b>
+					<ul>
+						<li>이제 기본적으로 상태 저항력 30%을 제공합니다.</li>
+						<li>보너스 피해가 50에서 25로 감소했습니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/heart_lg.png" width="48" height="36"></div><br style="clear: left;"><b>타라스크의 심장: </b>
+					<ul>
+						<li>기본적으로 체력 재생을 +50% 증폭합니다.</li>
+						<li>비전투시 체력 재생 비율이 7%에서 5%로 감소했습니다. <span class="ChangeDetailsPopup">체력 재생 +50% 증폭이 적용됩니다.</span></li>
+						<li>체력 보너스가 500에서 400으로 감소했습니다.</li>
+						<li>이제 아이템 조합에 재앙의 도끼, 활력 강화석, 타라스크의 반지와 400골드의 조합법이 필요합니다. </li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/spirit_vessel_lg.png" width="48" height="36"></div><br style="clear: left;"><b>혼령 단지: </b>
+					<ul>
+					<li>더 이상 체력 재생을 증폭시키지 않고 현재 체력 비율에 맞춰 체력 재생을 제공하지도 않습니다.</li>
+					<li>적에게 주는 초당 피해가 20에서 25로 증가했습니다. <span class="ChangeDetailsPopup">혼의 항아리와 수치가 같아집니다. 여전히 현재 체력 비율 피해와 치유량 감소를 제공합니다.</span></li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/headdress_lg.png" width="48" height="36"></div><br style="clear: left;"><b>머리 보호구: </b>
+					<ul>
+						<li>조합법 가격이 300에서 175로 감소했습니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/mekansm_lg.png" width="48" height="36"></div><br style="clear: left;"><b>메칸즘: </b>
+					<ul>
+						<li>조합법 가격이 900에서 950로 증가했습니다. <span class="ChangeDetailsPopup">총 가격은 75 줄어들었습니다.</span></li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/arcane_boots_lg.png" width="48" height="36"></div><br style="clear: left;"><b>신비의 장화: </b>
+					<ul>
+						<li>마나 회복량이 135에서 160으로 증가했습니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/guardian_greaves_lg.png" width="48" height="36"></div><br style="clear: left;"><b>수호자의 경갑: </b>
+					<ul>
+					<li>치유량이 275에서 300으로 증가했습니다.</li>
+					<li>마나 회복량이 160에서 200으로 증가했습니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/pipe_lg.png" width="48" height="36"></div><br style="clear: left;"><b>통찰의 파이프: </b>
+					<ul>
+					<li>하위 아이템 변경으로 모든 능력치 +2를 제공합니다. </li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/basher_lg.png" width="48" height="36"></div><br style="clear: left;"><b>해골 파쇄기: </b>
+					<ul><li>조합법 가격이 1000에서 900으로 감소했습니다.</li></ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/butterfly_lg.png" width="48" height="36"></div><br style="clear: left;"><b>나비검: </b>
+					<ul><li>시전 기술이 삭제되었습니다.</li></ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/lesser_crit_lg.png" width="48" height="36"></div><br style="clear: left;"><b>수정검: </b>
+					<ul><li>보너스 피해가 +30에서 +38로 증가했습니다.</li></ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/desolator_lg.png" width="48" height="36"></div><br style="clear: left;"><b>심판도: </b>
+					<ul><li>방어력 감소 효과가 6에서 7로 증가했습니다.</li></ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/force_staff_lg.png" width="48" height="36"></div><br style="clear: left;"><b>염동력 지팡이: </b>
+					<ul><li>이제 슬라크의 뛰어들기를 무시할 수 있습니다.</li></ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/hand_of_midas_lg.png" width="48" height="36"></div><br style="clear: left;"><b>미다스의 손: </b>
+					<ul><li>공격 속도 보너스가 30에서 40으로 증가했습니다.</li></ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/ward_sentry_lg.png" width="48" height="36"></div><br style="clear: left;"><b>감시 와드: </b>
+					<ul><li>범위가 850에서 1000으로 증가했습니다.</li></ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/gem_lg.png" width="48" height="36"></div><br style="clear: left;"><b>현시의 보석: </b>
+					<ul><li>이제 땅에 떨어졌을 때 다시 주워지기 전까지 이전 팀에게 300의 지상 현시의 시야를 제공합니다.</li></ul>
+					
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/lifesteal_lg.png" width="48" height="36"></div><br style="clear: left;"><b>섬뜩한 가면: </b>
+					<ul><li>더 이상 피해 +10를 제공하지 않습니다.</li>
+						<li>가격이 1100에서 900으로 감소했습니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/items/mask_of_madness_lg.png" width="48" height="36"></div><br style="clear: left;"><b>광기의 가면: </b>
+					<ul><li>피해가 +20에서 +10으로 감소했습니다.</li>
+					</ul>
+
+					<br><br>
+					<br><br>
+
+        </div>
+    </div>
+
+    <div class="Container RepeatY BGStyle1" id="Heroes">
+         <div class="Inner">
+            <h3>영웅 변경 사항</h3>
+            
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/abaddon_sb.png"></div><br style="clear: left;"><b>아바돈: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>기본 이동 속도가 310에서 325로 증가했습니다.</li>
+						<li>기본 민첩이 6 증가했습니다. <span class="ChangeDetailsPopup">기본 방어력은 그대로입니다.</span></li>
+						<br>
+						<li>안개 고리 투사체 속도가 1600에서 1300으로 감소했습니다.</li>
+						<br>
+						<li>아베르누스의 저주가 재설계되었습니다. 패시브. 공격 시 대상을 4초간 10/15/20/25%만큼 둔화시킵니다. 대상에 4번 공격 성공 시, 대상을 저주하고 침묵시켜 4초 간 30/40/50/60%만큼 둔화시키고 대상을 공격하는 아군 영웅은 40/60/80/100의 공격 속도 보너스를 받습니다. <span class="ChangeDetailsPopup">대상이 이미 저주에 걸린 상태면 스택을 쌓을 수 없습니다.</span></li>
+						<br>
+						<li>25레벨 특성인 아베르누스의 저주가 광역 안개 고리 범위 +375로 변경되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/ancient_apparition_sb.png"></div><br style="clear: left;"><b>고대 영혼: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>얼음 소용돌이는 더 이상 자신에게 보너스를 주지 않습니다.</li>
+						<br>
+						<li>오한의 손길이 재설계되었습니다. 오한의 손길은 이제 자동으로 시전되는 패시브 공격 변형치입니다. 쿨다운: 15/11/7/3초. 보너스 공격 범위와 대상을 잠깐 동안 크게 둔화시키는 마법 피해를 줍니다. 피해: 50/85/120/155. 둔화: 0.5초동안 100%. 공격 범위 보너스: 60/120/180/240. 소모 마나: 30/50/70/90</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/antimage_sb.png"></div><br style="clear: left;"><b>항마사: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>아가님의 홀 업그레이드가 삭제되었습니다.</li>
+						<br>
+						<li>대마법 보호막이 Counterspell로 바뀌었습니다. 기본적으로 15/25/35/45%의 마법 저항력을 주고 1.4초간 항마사를 향하는 모든 주문을 막고 시전자에게 되돌리는 Counterspell Shield를 시전할 수 있습니다. 쿨다운: 15/11/7/3. 소모 마나: 40</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/arc_warden_sb.png"></div><br style="clear: left;"><b>번개 감시자: </b>
+					<ul>
+						<li>이중 폭풍 분신의 처치 보너스가 고정 180골드/경험치에서 180/240/300으로 증가했습니다.</li>
+						<br>
+						<li>15레벨 특성인 체력 +350이 +300으로 변경되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/axe_sb.png"></div><br style="clear: left;"><b>도끼전사: </b>
+					<ul>
+						<li>광전사의 외침 보너스 방어력이 40에서 30으로 감소했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/bane_sb.png"></div><br style="clear: left;"><b>악몽의 그림자: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>약화가 재설계되었습니다. 대상 적에게 36/44/52/60%의 상태 저항력 감소를 거는 디버프를 걸고 (시간은 상태 저항력 감소에 의해 늘어날 수 있음) 대상의 공격 속도를 40/60/80/100 감소시킵니다. 8초 지속. 해제 가능. 시전 범위: 1000. 쿨다운: 12/10/8/6. 소모 마나: 70/90/110/130</li>
+						<br>
+						<li>15레벨 특성인 약화 공격력 강탈이 약화 공격 속도 강탈로 변경되었습니다.</li>
+						<li>20레벨 특성인 약화 공격력 감소 +100이 약화 공격 속도 감소 +100으로 변경되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/batrider_sb.png"></div><br style="clear: left;"><b>박쥐기수: </b>
+					<ul>
+						<li>불타는 올가미는 이제 20/40/60의 초당 피해를 줍니다. <span class="ChangeDetailsPopup">아가님의 홀 업그레이드는 더 이상 보너스 초당 피해를 주지 않습니다. 1초에 한번씩 적용됩니다.</span> </li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/beastmaster_sb.png"></div><br style="clear: left;"><b>야수지배자: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>야생의 부름이 재설계되었습니다. 더 이상 중립 크립을 소환하지 않고 소환되는 멧돼지와 매에 각각 단축키를 가집니다. 매 소환은 이제 글로벌 타겟팅 스킬이며 영구 은신을 가진 조종이 불가능한 매를 시전 지점으로부터 보냅니다. 각각의 소환물에 적용되는 능력치는 다음과 같습니다:</li>
+						
+						<ul>
+						<blockquote>
+						<li>	멧돼지 체력: 300/450/600/750 <span class="ChangeDetailsPopup">이전에는 275/350/425/500</span></li>
+						<li>	멧돼지 피해 유형: 영웅 <span class="ChangeDetailsPopup">이전에는 관통</span></li>
+						<li>	멧돼지 공격 피해: 16/32/48/64  <span class="ChangeDetailsPopup">이전에는 16/24/32/40</span></li>
+						<li>	멧돼지 독 둔화: 3초간 10/20/30/40%</li>
+						<li>	멧돼지 지속시간: 60</li>
+						<li>	멧돼지 소환 쿨다운: 42/38/34/30</li>
+						<li>	멧돼지 소모 마나: 50</li>
+						<br>
+						<li>	매 체력: 300/450/600/750 <span class="ChangeDetailsPopup">이전에는 350</span></li>
+						<li>	매 영구 은신 <span class="ChangeDetailsPopup">이전에는 은신이 없었습니다.</span></li>
+						<li>	매 이동 속도: 300/340/380/420 <span class="ChangeDetailsPopup">이전에는 430</span></li>
+						<li>	매 시야: 600/700/800/900 <span class="ChangeDetailsPopup">이전에는 1000</span></li>
+						<li>	매 지속시간: 60</li>
+						<li>	매 소환 쿨다운: 60/50/40/30 <span class="ChangeDetailsPopup">이전에는 60</span></li>
+						<li>	매 소모 마나: 30</li>
+						</blockquote>
+						</ul>
+						<li>태고의 표효 자신의 이동속도 보너스가 30에서 40%로 증가했습니다.</li>
+						<li>태고의 표효 주 대상이 아닌 유닛을 밀쳐내는 거리가 300에서 450으로 증가했습니다.</li>
+						<li>태고의 표효 주 대상이 아닌 유닛을 밀쳐내는 지속시간이 0.6에서 1.0초로 증가했습니다.</li>
+						<li>태고의 표효 주 대상이 아닌 유닛 둔화 지속시간이 주 대상과 같게 증가했습니다.  <span class="ChangeDetailsPopup">2/3/4초에서 3/3.5/4초</span></li>
+						<li>태고의 표효 주 대상이 아닌 유닛 둔화량이 50에서 60으로 증가했습니다.</li>
+						<br>
+						<li>25레벨 특성인 매 소환 +2가 매 소환 쿨다운 -15초로 변경되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/bloodseeker_sb.png"></div><br style="clear: left;"><b>혈귀: </b>
+					<ul>
+						<li>갈증의 피해 +30/45/60/75 보너스가 공격 속도로 변경되었습니다.</li>
+						<li>갈증 이동 속도 보너스가 7/18/29/40%에서 12/24/36/48%로 증가했습니다.</li>
+						<br>
+						<li>피의 분노의 주고받는 피해가 25/30/35/40%에서 10/15/20/25%로 감소했습니다.</li>
+						<li>피의 분노는 이제 거리에 상관없이 모든 스킬을 최대로 증폭합니다. <span class="ChangeDetailsPopup">이전에는 먼 거리에서 (천둥신의 분노) 절반의 증폭만 적용되었습니다.</span></li>
+						<br>
+						<li>피의 의식 피해가 120/160/200/240 125/175/225/275로 증가했습니다.</li>
+						<br>
+						<li>파열은 이제 대상이 100 거리를 이동할 때마다 현재 체력의 8%를 순수 피해로 줍니다. 파열은 이제 대상을 죽일 수 없습니다.</li>
+						<li>파열 지속시간이 12에서 8/10/12초로 변경되었습니다.</li>
+						<li>파열 시전 범위가 800에서 700/800/900으로 변경되었습니다.</li>
+						<li>파열 쿨다운이 60에서 70/60/50으로 변경되었습니다.</li>
+						<br>
+						<li>20레벨 특성인 파열 피해 +18%이 파열 시전 범위 +600로 변경되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/bounty_hunter_sb.png"></div><br style="clear: left;"><b>현상금 사냥꾼: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>힘이 18+2.1에서 20+2.5로 변경되었습니다.</li>
+						<br>
+						<li>그림자 보행이 30/60/90/120의 피해를 주는 대신 4초간 14/20/26/32%의 이동 속도 둔화를 줍니다.</li>
+						<br>
+						<li>지나다가 재설계되었습니다. 패시브. 쿨다운 12/9/6/3. 공격에 보너스 피해 +80/110/140/170를 추가합니다. 타격 시 적 영웅의 12/18/24/30 위험 골드를 강탈합니다. 쿨다운이 돌아오면 무기에 빛나는 이펙트가 추가됩니다.</li>
+						<br>
+						<li>추적 이동 속도 보너스는 이제 영웅에게만 적용됩니다.</li>
+						<li>추적된 대상 공격시 1.4/1.6/1.8x의 치명타가 적용됩니다.</li>
+						<li>추적 시전은 더 이상 투명화를 해제하지 않습니다.</li>
+						<li>추적 골드 반경이 925에서 1200으로 증가했습니다.</li>
+						<br>
+						<li>20레벨 특성인 지나다 치명타 +125%가 지나다 골드 강탈 +90으로 변경되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/brewmaster_sb.png"></div><br style="clear: left;"><b>취권도사: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>지능 상승량이 1.3에서 1.6으로 증가했습니다.</li>
+						<li>기본 이동 속도가 295에서 305로 증가했습니다.</li>
+						<br>
+						<li>천둥벽력 소모 마나가 90/105/130/150에서 90/100/110/120으로 감소했습니다.</li>
+						<br>
+						<li>취권이 재설계되었습니다. 자신에게 적용되는 버프를 거는 액티브 능력이며 회피 확률 50/60/70/80%와 80% 확률의 치명타 200/220/240/260%를 5초간 부여합니다. 시전 시간 동안 이동 속도가 -20%에서 +40%까지 변화합니다. 쿨다운: 20/19/18/17. 소모 마나: 35/40/45/50</li>
+						<br>
+						<li>인사불성이 Cinder Brew로 대체되었습니다. 400 효과 범위의 알코올을 던져 맞은 대상을 25% 둔화시키고 20/25/30/35% 확률로 자기 자신을 공격하게 만듭니다. 7초 지속. 대상이 화염 기반 주문에 맞을 시 (취권도사 불 전사의 신광검 짝퉁 패시브 포함), 지속시간이 초기화되고 불에 휩싸여 10/25/40/55의 초당 피해를 입힙니다. 쿨다운: 20/18/16/14. 소모 마나: 50. 자기 공격으로는 죽을 수 없습니다.</li>
+
+						<li>다음의 영웅들은 화염 기반 주문을 가지고 있습니다: 용기사, 자키로, 불사조, 도끼전사, 파멸, 불꽃령, 취권도사, 리나, 오거 마법사, 박쥐기수, 망령 제왕, 클링츠, 원소술사, 흑마법사, 지하군주, 허스카</li>
+						<br>
+						<li>레벨 25 특성인 취권 +15%가 치명타 +200%로 변경되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/bristleback_sb.png"></div><br style="clear: left;"><b>가시멧돼지: </b>
+					<ul>
+						<li>끈적이는 콧물 방어력 감소 효과가 1/1.4/1.8/2.2에서 1.4/1.8/2.2/2.6으로 증가했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/broodmother_sb.png"></div><br style="clear: left;"><b>거미여왕: </b>
+					<ul>
+						<li>새끼거미와 약한 새끼거미의 마법 저항력이 50%에서 40%로 감소했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/centaur_sb.png"></div><br style="clear: left;"><b>켄타우로스 전쟁용사: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>힘 상승량이 4.3에서 4.0으로 감소했습니다.</li>
+						<br>
+						<li>발굽 구르기 피해가 100/150/200/250에서 80/110/140/170으로 감소했습니다.</li>
+						<br>
+						<li>양날의 검 피해가 175/250/325/400에서 150/200/250/300 + 힘의 40/60/80/100%로 변경되었습니다.</li>
+						<li>양날의 검 시전 지점이 0.5에서 0.4로 향상되었습니다.</li>
+						<br>
+
+						<li>반사가 Retaliate로 바뀌었습니다.</li>
+						<li>Retaliate는 더 이상 힘 기반 능력이 아닙니다.</li>
+						<li>Retaliate 피해가 16/18/20/22에서 16/32/48/64로 증가했습니다.</li>
+						<li>Retaliate는 이제 적 영웅이나 포탑에게 공격받을 때마다 충전을 획득합니다. 충전을 소모해 시전하면 20초간 기본 공격 피해 보너스를 얻습니다. 최대 중첩: 10. 중첩 당 기본 공격력이 6/9/12/15% 상승. 쿨다운: 55/50/45/40</li>
+						<br>
+						<li>돌격 쿨다운이 90/75/60에서 110/100/90으로 증가했습니다.</li>
+						<li>돌격 소모 마나가 100에서 150으로 증가했습니다.</li>
+						<br>
+						<li>10레벨 특성인 마법 저항력 +10%가 이동 속도 +20으로 변경되었습니다.</li>
+						<li>15레벨 특성인 반사 힘 피해 +15%가 양날의 검 힘 피해 +50%로 변경되었습니다.</li>
+						<li>15레벨 특성인 피해 +75가 기본 피해 +30으로 변경되었습니다.</li>
+						<li>20레벨 특성인 양날의 검 피해 +300이 Retaliate 피해 +50으로 변경되었습니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/chaos_knight_sb.png"></div><br style="clear: left;"><b>혼돈 기사: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+					<li>혼돈의 가격이 재설계되었습니다. 쿨다운이 있는 패시브 능력. 최소 120%에서 최대 160/190/220/250% 사이의 랜덤한 치명타 공격을 가합니다. 피해의 35/40/45/50%를 흡혈합니다. 쿨다운: 8/7/6/5</li>
+					<br>
+					<li>현실의 균열은 더 이상 방어력을 감소시키지 않습니다.</li>
+					<li>현실의 균열은 이제 대상을 고정된 거리만큼 이동시킵니다: 250/300/350/400</li>
+					<li>현실의 균열은 이제 대상에게 중상 효과를 줘서 2초간 이동 속도를 15/25/35/45%, 공격 속도를 30/50/70/90 감소시킵니다.</li>
+					<li>현실의 균열 쿨다운이 18/14/10/6에서 20/15/10/5로 재산정되었습니다.</li>
+					<li>현실의 균열 시전 범위가 550/600/650/700에서 475/550/625/700으로 감소되었습니다.</li>
+					<br>
+					<li>혼돈의 화살 최소 피해가 75/100/125/150에서 60/90/120/150으로 재산정되었습니다.</li>
+					<li>혼돈의 화살 최대 피해가 200/225/250/275에서 180/210/240/270으로 재산정되었습니다.</li>
+					<li>혼돈의 화살 투사체 속도가 1000에서 700으로 감소했습니다.</li>
+					<br>
+					<li>환상: 환상은 더 이상 확률로 추가 환영을 소환하지 않습니다.</li>
+					<li>환상: 환영의 수가 1/2/3에서 3으로 증가했습니다.</li>
+					<li>환상: 환영이 주는 피해가 100%에서 40/70/100%로 재산정되었습니다.</li>
+					<li>환상: 환영 지속시간이 42에서 30으로 감소했습니다.</li>
+					<br>
+					<li>25레벨 특성인 현실의 균열 방어력 감소 -7이 혼돈의 가격 쿨다운 -2초로 변경되었습니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/chen_sb.png"></div><br style="clear: left;"><b>첸: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+					<li>참회 투사체 속도가 2000에서 1400으로 감소했습니다.</li>
+					<li>참회는 더 이상 피해를 증폭시키지 않습니다.</li>
+					<li>참회는 대상을 공격하는 모든 아군 유닛에게 30/60/90/120의 보너스 공격 속도를 부여합니다.</li>
+					<br>
+					<li>신념의 시험이 Divine Favor로 변경되었습니다. 아군 유닛을 선택해 7/13/19/25의 체력 재생을 주고 받는 모든 재생과 치유 효과를 25% 증폭하며 대상의 공격력을 10/20/40/80 증가시킵니다. 12초 지속. 쿨다운: 26/24/22/20. 소모 마나: 110. 시전 범위: 800</li>
+					<br>
+					<li>성스러운 설득은 이제 4/5/6/6의 중립 크립 레벨 제한을 가집니다.</li>
+					<li>성스러운 설득 최소 체력 증가가 700/800/900/1000에서 1000으로 증가했습니다.</li>
+					<li>성스러운 설득은 이제 아군 유닛을 우물로 보내는 대신 지도상의 첸이 있는 곳으로 보냅니다. 대상이 적 영웅에 기반한 피해를 입으면 발동이 취소됩니다.</li>
+					<li>성스러운 설득 쿨다운이 32/24/18/10에서 15로 변경되었습니다. <span class="ChangeDetailsPopup">이 능력은 원래 빛의 수호자가 가지고 있었으나 빛의 수호자는 더이상 이 능력을 가지지 않습니다.</span></li>
+					<br>					
+					<li>15레벨 특성인 신념의 시험 쿨다운 -10초가 Divine Favor 쿨다운 -10초로 변경되었습니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/clinkz_sb.png"></div><br style="clear: left;"><b>클링츠: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+					<li>죽음의 서약이 Burning Army로 변경되었습니다. 벡터에 따라 대상을 지정합니다. 4/5/6명의 불타는 해골 궁수들을 1300 거리 내에 소환합니다. 해골은 불타는 화살을 사용하고 클링츠의 기본 공격력을 가지며 움직이지 못하고 영웅의 공격에 2번 맞으면 사망합니다. (저주술사 와드처럼) 항상 적 영웅을 대상으로 공격하고 공격 범위는 클링츠와 동일합니다. 0.8초 간격으로 소환됩니다. 시전 범위: 800. 쿨다운 110. 소모 마나: 125/175/225. 20초 지속. 기본 공격 시간: 1.8/1.65/1.5</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/rattletrap_sb.png"></div><br style="clear: left;"><b>태엽장이: </b>
+					<ul>
+						<li>조명탄 투사체 속도가 1750에서 2250으로 증가했습니다.</li>
+						<br>
+						<li>강화 톱니 밀쳐내기 거리가 250에서 300으로 증가했습니다.</li>
+						<li>강화 톱니 밀쳐내기 지속시간이 0.85에서 1로 증가했습니다.</li>
+						<li>강화 톱니 피해가 50/100/150/200에서 50/125/200/275로 증가했습니다.</li>
+						<li>강화 톱니 마나번이 50/100/150/200에서 50/80/110/140로 감소했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/crystal_maiden_sb.png"></div><br style="clear: left;"><b>수정의 여인: </b>
+					<ul>
+						<li>기본 공격력이 2 증가했습니다.</li>
+						<br>
+						<li>동상은 더 이상 대상을 방해하지 않습니다 <span class="ChangeDetailsPopup">다른 속박 기술들의 변경사항과 같습니다. 여전히 순간이동 주문서를 방해합니다.</span></li>
+						<li>동상 시전 범위가 525에서 550으로 증가했습니다.</li>
+						<br>
+						<li>얼음장은 더 이상 0.3의 시전 지점을 가지지 않습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/dark_seer_sb.png"></div><br style="clear: left;"><b>어둠 현자: </b>
+					<ul>
+						<li>급가속 지속시간이 3/4.5/6/7.5에서 6으로 재산정되었습니다.</li>
+						<li>급가속 쿨다운이 13/12/11/10에서 16/14/12/10으로 재산정되었습니다.</li>
+						<li>급가속은 이제 대상이 이동 둔화에 걸리지 않게 합니다.</li>
+						<li>급가속 속도가 550에서 +36/54/72/90%로 변경되었습니다.</li>
+						<li>급가속은 이제 대상이 이동 속도 제한을 무시하게 합니다.</li>
+						<li>급가속은 이제 대상이 유닛 충돌 크기를 무시하게 합니다.</li>
+						<br>
+						<li>복제의 벽은 이제 벡터에 따라 대상을 지정합니다.</li>
+						<li>복제의 벽 시전 지점이 0.4에서 0.2로 향상되었습니다.</li>
+						<li>복제의 벽 시전 범위가 500/900/1300에서 1300로 증가했습니다.</li>
+						<li>복제의 벽은 이제 벽에 닿는 적 영웅을 지속적으로 둔화시킵니다. 디버프는 벽에서 떨어지면 0.75초후에 사라집니다. <span class="ChangeDetailsPopup">이전에는 환영이 죽었을 때에만 둔화가 재적용되었습니다.</span></li>
+						<li>복제의 벽 둔화가 75%에서 50/60/70%로 감소했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/dazzle_sb.png"></div><br style="clear: left;"><b>대즐: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>맹독의 손길 마나 소모가 80에서 80/90/100/110으로 증가했습니다.</li>
+						<li>맹독의 손길 디버프는 이제 중첩될 수 있습니다.</li>
+						<br>
+						<li>주문 엮기가 Bad Juju로 변경되었습니다. 패시브 능력. 30/40/50% 쿨다운 감소를 부여합니다. 주문을 시전할 때마다, 1200 효과 범위 안의 모든 적이 10초간 2/2.25/2.5 방어력을 잃습니다. 디버프 중첩 시 지속시간이 초기화됩니다. 로샨에게는 적용되지 않습니다.</li>
+						<br>
+						<li>어둠의 물결 쿨다운이 12/10/8/6에서 13/11/9/7로 증가했습니다.</li>
+						<br>
+						<li>25레벨 특성인 주문 엮기 초당 방어력 +0.5가 Bad Juju 방어력 감소량 +0.5로 변경되었습니다.</li>
+						<li>25레벨 특성인 어둠의 물결 쿨다운 -4초가 맹독의 손길 둔화 +40%로 변경되었습니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/death_prophet_sb.png"></div><br style="clear: left;"><b>죽음의 예언자: </b>
+					<ul>
+					<li>이동 속도가 305에서 310으로 증가했습니다.</li>
+
+					<li>혼령 빨아들이기는 이제 4/6/8/10% 만큼 대상의 이동 속도를 강탈합니다. <span class="ChangeDetailsPopup">5/10/15/20%만큼 둔화시키는 대신</span></li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/disruptor_sb.png"></div><br style="clear: left;"><b>디스럽터: </b>
+					<ul>
+						<li>천둥 강타 피해가 40/60/80/100에서 45/70/95/120으로 증가했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/doom_bringer_sb.png"></div><br style="clear: left;"><b>파멸의 사도: </b>
+					<ul>
+						<li>기본 공격 범위가 150에서 175로 증가했습니다.</li>
+						<br>
+						<li>삼기키는 이제 다른 유닛을 소화하고 있을 때에도 사용할 수 있습니다.</li>
+						<li>삼기키는 이제 크립 소화 중 5/10/15/20 체력 재생을 부여합니다.</li>
+						<li>삼기키는 이제 크립 소화에 항상 80초가 걸립니다.</li>
+						<li>삼기키는 이제 토글로 대상 크립의 능력을 흡수할지를 선택할 수 있습니다. <span class="ChangeDetailsPopup">자동 시전이 활성화되어있으면 능력을 흡수합니다. 활성화되어있지 않다면 흡수하지 않습니다.</span></li>
+						<br>
+						<li>불타는 대지의 체력 회복이 삭제되었습니다.</li>
+						<li>불타는 대지 쿨다운이 55에서 55/50/45/40으로 감소했습니다.</li>
+						<li>불타는 대지 피해가 16/24/32/40에서 20/30/40/50으로 증가했습니다.</li>
+						<br>
+						<li>10레벨 특성인 불타는 대지 피해/체력 회복 +10이 불타는 대지 피해 +20으로 변경되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/dragon_knight_sb.png"></div><br style="clear: left;"><b>용기사: </b>
+					<ul>
+						<li>고룡 형상 범위 공격은 이제 300 효과 범위 내에서 75%의 피해를 가합니다. <span class="ChangeDetailsPopup">50 범위 안에서 100%, 150 안에서 50%, 250 안에서 25% 대신에</span></li>
+						<li>고룡 형상 범위 공격은 이제 더 이상 공격이 빗나갈 시 부수적 피해를 입히지 않습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/drow_ranger_sb.png"></div><br style="clear: left;"><b>드로우 레인저: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>명중의 오라는 이제 민첩의 10/20/30/40%만큼 피해를 올려주는 대신 민첩의 20/36/52/68%만큼 공격 속도를 증가시킵니다.</li>
+						<br>
+						<li>명사수가 재설계되었습니다. 이제 20/30/40%의 확률로 회피할 수 없고 대상의 방어력을 완전히 무시하는 공격을 가합니다. 크립을 즉시 처치합니다. 적 영웅이 400 거리 내에 있으면 비활성화됩니다.</li>
+						<br>
+						<li>20레벨 특성인 명사수 민첩 +20이 회피 +25%로 변경되었습니다.</li>
+						<li>25레벨 특성인 명중의 오라 피해 +20%이 명중의 오라 공격 속도 +25%로 변경되었습니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/earthshaker_sb.png"></div><br style="clear: left;"><b>지진술사: </b>
+					<ul>
+						<li>균열 쿨다운이 18/17/16/15에서 21/19/17/15로 증가했습니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/earth_spirit_sb.png"></div><br style="clear: left;"><b>대지령: </b>
+					<ul>
+					<li>힘 상승량이 3.5에서 3.8로 증가했습니다.</li>
+					<br>
+					<li>바위 구르기가 0.4/0.6/0.8/1.0초 80% 둔화에서 0.4/0.6/0.8/1.0초 기절로 변경되었습니다.</li>
+					<li>바위를 사용 시 바위 구르기 기절 지속시간이 추가로 0.4/0.6/0.8/1.0초 증가합니다.</li>
+					<br>
+					<li>바위 치기가 0.5/1/1.5/2초 기절에서 1.25/2.5/3.25/4초 80% 둔화로 변경되었습니다.</li>
+					<li>바위 치기 피해가 50/100/150/200에서 105/170/235/300으로 증가했습니다.</li>
+					<br>
+					<li>바위 잔영 최대 충전 횟수가 6에서 7로 증가했습니다.</li>
+					<br>
+					<li>자력 주입 효과 범위가 300에서 350으로 증가했습니다.</li>
+					<br>
+					<li>25레벨 특성인 바위 치기 기절 지속시간 +1초가 바위 구르기 기절 지속시간 +0.75초로 변경되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/elder_titan_sb.png"></div><br style="clear: left;"><b>고대 티탄: </b>
+					<ul>
+						<li>우주의 영혼 피해가 60/90/120/150에서 50으로 감소했습니다.</li>
+						<li>우주의 영혼이 되돌아오는 속도가 600에서 800으로 증가했습니다.</li>
+						<li>우주의 영혼 영웅 당 공격 피해 보너스가 15/30/45/60에서 20/40/60/80으로 증가했습니다.</li>
+						<li>우주의 영혼은 이제 닿은 영웅 당 +1.5/3/4.5/6, 닿은 크립 당 +0.5의 방어력을 제공합니다.</li>
+						<li>우주의 영혼 이동 속도 보너스가 5%에서 7%로 증가했습니다.</li>
+						<li>우주의 영혼 이동 속도 제한이 30%에서 40%로 증가했습니다.</li>
+						<li>우주의 영혼 보너스 지속시간이 9에서 10초로 증가했습니다.</li>
+						<br>
+						<li>25레벨 특성인 흡혈 +100%이 우주의 영혼 시전 시 주문 면역으로 변경되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/ember_spirit_sb.png"></div><br style="clear: left;"><b>불꽃령: </b>
+					<ul>
+					<li>불꽃 잔영은 이제 도착 지점에서만 피해를 주는 대신 이동하는 경로상의 적에게도 (절반의 반경으로) 피해를 줄 수 있습니다. <span class="ChangeDetailsPopup">한 잔영 당 한 번씩만 피해를 줍니다.</span></li>
+					</ul>
+					
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/enigma_sb.png"></div><br style="clear: left;"><b>에니그마: </b>
+					<ul>
+						<li>기본 이동 속도가 300에서 290으로 감소했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/faceless_void_sb.png"></div><br style="clear: left;"><b>얼굴없는 전사: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>시간 가두기 발동시 대상이 굳어있는 동안 얼굴없는 전사가 두 번째 추가 타격을 가합니다. 보너스 피해 30/40/50/60. 대상은 0.75초간 기절.</li>
+						<br>
+						<li>15레벨 특성인 피해 +100이 시간 가두기 피해 +70으로 변경되었습니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/grimstroke_sb.png"></div><br style="clear: left;"><b>그림스트로크: <span class="Captains">캡틴 모드에 추가되었습니다.</span></b>
+					<ul>
+					<li>그림스트로크가 캡틴 모드에 추가되었습니다.</li>
+					<br>
+					<li>영혼결속은 이제 대상을 구속 상태로 만듭니다: 순간이동과 이동 관련 능력을 막습니다.</li>
+					<li>영혼결속의 지속시간이 6/8/10에서 6/7/8로 감소했습니다.</li>
+					<br>
+					<li>그러안는 유령의 유령은 이제 대상에게 달라붙기 전에 더 가까히 이동합니다.</li>
+					<br>
+					<li>먹물 너울은 이제 초당 피해 대신 대상이 먹물에 가둬진 지속시간에 비례해 피해와 기절을 가합니다. <span class="ChangeDetailsPopup">0에서 3초까지 선형적으로 증가합니다.</span></li>
+					<li>먹물 너울 최대 기절 지속시간이 2.2/2.8/3.4/4에서 2/2.6/3.2/3.8로 감소했습니다.</li>
+					<br>
+					<li>20레벨 특성인 유령 처치 타격 횟수 +2이 +1로 변경되었습니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/huskar_sb.png"></div><br style="clear: left;"><b>허스카: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>광전사의 피는 더 이상 마법 저항력을 제공하지 않고 대신 잃은 체력에 기반해 힘의 20/40/60/80%만큼 체력 재생이 상승합니다.</li>
+						<li>광전사의 피는 현재 체력이 낮을수록 빠르게 회복합니다.</li>
+						<br>
+						<li> 내면의 활력이 Inner Fire로 변경되었습니다. 500 거리 안의 모든 적을 밀쳐내고 100/155/210/265 피해를 가하며 1.75/2.5/3.25/4초간 무장해제 시킵니다. 최대 550 거리까지 밀쳐낼 수 있습니다. 밀쳐내기 지속시간: 0.6. 쿨다운: 18/16/14/12초. 소모 마나: 75/100/125/150</li>
+						<br>
+						<li>15레벨 특성인 흡혈 +15%가 +20%로 증가했습니다.</li>
+						<li>15레벨 특성인 불타는 창 초당 피해 +10이 +15로 증가했습니다.</li>
+						<li>20레벨 특성인 힘 +15가 +20으로 증가했습니다.</li>
+						<li>25레벨 특성인 공격 범위 +150이 +175로 증가했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/wisp_sb.png"></div><br style="clear: left;"><b>이오: </b>
+					<ul>
+						<li>영혼 쿨다운이 26/22/18/14에서 26/24/22/20으로 증가했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/jakiro_sb.png"></div><br style="clear: left;"><b>자키로: </b>
+					<ul>
+						<li>불바다 피해가 이제 영향받은 유닛에게 2초간 지속됩니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/juggernaut_sb.png"></div><br style="clear: left;"><b>가면무사: </b>
+					<ul>
+					<li>민첩이 10 증가했습니다. (기본 공격력은 그대로입니다.)</li>
+					<br>
+					<li>연속 베기가 투명화(무적) 상태에서 공격 속도에 기반한 물리 피해를 주던 것을 아이템 효과나 치명타 등을 받을 수 있는 실제 공격으로 바꾸었습니다. 3/3.25/3.5초간 지속되며 가면무사의 공격 속도보다 1.8배 빠르게 공격합니다. 각 공격 당 피해 +30/45/60. 아가님의 홀 착용시 지속시간 4/4.25/4.5초와 쿨다운 70.</li>
+					<br>
+					<li>연속 베기는 더 이상 시전 시간 동안 지속적으로 강제 명령을 내리지 않습니다. <span class="ChangeDetailsPopup">더 이상 (예약) 명령을 방해하지 않습니다.</span></li>
+					<li>연속 베기는 더 이상 크립을 즉시 처치하지 않습니다.</li>
+					<br>
+					<li>25레벨 특성인 연속 베기 횟수 +5가 연속 베기 지속시간 +1초로 변경되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/keeper_of_the_light_sb.png"></div><br style="clear: left;"><b>빛의 수호자: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>마나 유출과 영혼 형상이 삭제되었습니다. <span class="ChangeDetailsPopup">소환 능력은 이제 첸이 가집니다.</span></li>
+						<br>
+						<li>천상의 빛 쿨다운이 10에서 11로 증가했습니다.</li>
+						<br>
+						<li>차크라 마법의 작동 방식이 바뀌었습니다. 마나를 80/160/240/320 회복하고 현재 쿨다운 중인 기본 스킬의 쿨다운을 3/4/5/6초 줄여줍니다. 쿨다운: 20/18/16/1</li>
+						<br>
+						<li>눈부신 빛이 일반 스킬로 변경되었습니다. 600 효과 범위 안의 적을 실명시켜 3/4/5/6초간 70% 확률로 공격이 빗나가게 만듭니다. 대상을 350거리만큼 이동시키고 50/100/150/200의 피해를 줍니다. 쿨다운: 30/25/20/15. 소모 마나: 100/125/150/175. 시전 범위: 550/600/650/700</li>
+						<br>
+						<li>새 궁극기 Will-o-Wisp을 추가하였습니다. 공격 가능한 빛덩어리인 Ignis Fatuus를 소환합니다. 빛은 1.3초간 깜빡이고 1.75초동안 꺼집니다. 빛이 발광하는 동안 650 반경 내의 모든 적은 최면에 걸려 강제로 빛을 바라보고 행동할 수 없습니다. 빛덩어리는 4/5/6회 공격을 당해 소멸되기 전까지 3/4/5번 더 깜빡일 수 있습니다. 쿨다운: 120. 시전 범위: 900. 소모 마나 200/300/400. 시전 시 첫 깜빡임까지 1초의 유예 시간이 있습니다.</li>
+						<br>
+						<li>아가님의 홀은 이제 그냥 낮 시간 동안 천상의 빛이 아군을 치유하게만 만듭니다. <span class="ChangeDetailsPopup">낮 시간 동안에 영혼 형상 모습으로 변합니다.</span></li>
+						<br>
+						<li>25레벨 특성인 마나 유출 기절 +2초가 Will-O-Wisp 깜빡임 횟수 +2로 변경되었습니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/legion_commander_sb.png"></div><br style="clear: left;"><b>군단 사령관: </b>
+					<ul>
+						<li>결투 승리 시 자동으로 불굴의 의지를 시전합니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/lich_sb.png"></div><br style="clear: left;"><b>리치: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>지능이 16 + 3.3에서 20 + 3.6으로 증가했습니다.</li>
+						<br>
+						<li>서리 폭발 소모 마나가 125/150/170/190에서 105/130/155/180으로 감소했습니다.</li>
+						<br>
+						<li>희생이 Sinister Gaze로 변경되었습니다. 한 명의 대상에게 시전하는 정신집중 능력입니다. 대상이 천천히 리치 쪽으로 걸어오게 만듭니다. <span class="ChangeDetailsPopup">둘 사이의 32/38/44/50% 지점으로 이동하게 만듭니다.</span> 최대 지속 시간: 1.6/1.9/2.2/2.5초. 시전 범위: 500/525/550/575. 쿨다운: 30. 소모 마나: 120/130/140/150</li>
+						<br>
+						<li>얼음 갑옷이 Frost Shield로 변경되었습니다. 자신 또는 아군을 지정해 시전합니다. 받는 물리 공격 피해를 6초간 30/40/50/60% 감소시킵니다. 매초 600 효과 범위 내의 모든 적에게 20/30/40/50 피해를 주고 0.5초간 35% 둔화시킵니다. 쿨다운: 30/25/20/15. 소모 마나: 100/110/120/130. 포탑을 대상으로 시전할 수 있습니다.</li>
+						<br>
+						<li>20레벨 특성인 분당 골드 +180이 Frost Shield +2초로 변경되었습니다.</li>
+						<li>20레벨 특성인 시전 범위 +175가 +150으로 감소했습니다.</li>
+						<li>25레벨 특성인 얼음 갑옷 체력 재생 +30이 Frost Shield 체력 재생 +60으로 증가했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/life_stealer_sb.png"></div><br style="clear: left;"><b>흡혈마: </b>
+					<ul>
+						<li>체력 삼키기가 현재 체력의 4.5/5.5/6.5/7.5%에서 최대 체력의 1.75/2.5/3.25/4%로 변경되었습니다.</li>
+						<br>
+						<li>25레벨 특성인 체력 삼키기 피해 현재 체력 +2%가 최대 체력 +1%로 변경되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/lion_sb.png"></div><br style="clear: left;"><b>라이온: </b>
+					<ul>
+						<li>마나 흡수 둔화량이 16/19/22/25%에서 20/24/28/32%로 증가했습니다.</li>
+						<br>
+						<li>죽음의 손가락은 이제 영웅을 처치할 때마다 피해 +50이 추가됩니다. 죽음의 손가락을 맞은 적 영웅이 3초 안에 사망해도 피해 보너스를 받습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/lone_druid_sb.png"></div><br style="clear: left;"><b>고독한 드루이드: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>기본 이동 속도가 320에서 340으로 증가했습니다.</li>
+						<br>
+						<li>영혼 곰의 이동 속도가 320/330/340/350에서 340/350/360/370으로 증가했습니다.</li>
+
+						<li>영혼 곰의 공격 후딜레이가 0.67에서 0.4로 감소했습니다.</li>
+						<li>영혼 곰의 공격 피해가 35/45/55/65에서 35/50/65/80으로 증가했습니다.</li>
+
+						<li>영혼 곰은 이제 레벨 1 능력인 Defender를 가집니다. 고독한 드루이드가 곰 활성화 범위 내에 있다면 받는 피해의 30%를 영혼 곰이 받습니다.</li>
+						<br>
+						<li>광증이 Spirit Link로 변경되었습니다. 고독한 드루이드와 영혼 곰 모두에게 30/50/70/90 보너스 공격 속도를 부여하고 드루이드가 주는 피해의 40/50/60/70%가 곰을, 곰이 주는 피해의 40/50/60/70%가 드루이드를 회복시킵니다. 지속시간: 10초. 쿨다운: 42/34/26/18. 소모 마나: 50/60/70/80</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/luna_sb.png"></div><br style="clear: left;"><b>루나: </b>
+					<ul>
+						<li>달의 축복은 이제 보너스 피해 대신 +8/14/20/26의 주 스탯 보너스 오라를 제공합니다.</li>
+						<br>
+						<li>15레벨 특성인 달의 축복 피해 +24가 달의 축복 주 능력치 +14로 변경되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/lycan_sb.png"></div><br style="clear: left;"><b>늑대인간: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>울부짖기가 재설계되었습니다. 늑대인간을 포함해 아군 플레이어가 조종하는 지도상의 모든 영웅과 하수인에게 공격 속도 +21/34/47/60, 방어력 +3/4/5/6, 체력 재생 +4/6/8/10을 부여합니다. 9초 지속. 쿨다운: 50/45/40/35. 소모 마나: 25/30/35/40.</li>
+						<br>
+						<li>레벨 25 특성인 울부짖기 체력 +600이 변신 치명타 확률 +40%으로 변경되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/magnataur_sb.png"></div><br style="clear: left;"><b>마그누스: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>꿰뚫기 쿨다운이 25에서 26/24/22/20으로 감소했습니다.</li>
+						<br>
+						<li>충격파가 재설계되었습니다. 지정된 장소를 향해 충격파를 발사합니다. 충격파는 근처의 적을 미세하게 끌어당깁니다. 피해: 75/150/225/300. 0.75초간 60% 둔화. 너비: 200. 거리: 1200. 투사체 속도: 900. 당기기 지속시간: 0.2. 소모 마나: 90/100/110/120. 쿨다운: 14/13/12/11</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/medusa_sb.png"></div><br style="clear: left;"><b>메두사: </b>
+					<ul>
+						<li>석화의 시선은 더 이상 적에게 +100%의 마법 저항력을 주지 않습니다.</li>
+						<li>석화의 시선은 더 이상 환영을 즉시 제거하지 않습니다.</li>
+						<br>
+						<li>신비로운 뱀의 석화의 시선으로 굳은 적에게 주는 피해 유형이 바뀌지 않습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/meepo_sb.png"></div><br style="clear: left;"><b>미포: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>기본 이동 속도가 310에서 320으로 증가했습니다.</li>
+						<br>
+						<li>흙점쟁이의 일격이 Ransack으로 변경되었습니다. 매 타격이 적 영웅의 체력을 8/12/16/20만큼 강탈하고 (크립에겐 4/6/8/10) 모든 미포를 같은 양만큼 회복시킵니다. <span class="ChangeDetailsPopup">거리 제한은 없습니다. 강탈량만큼 적에게 피해를 줍니다. 로샨에겐 적용되지 않습니다.</span></li>
+						<br>
+						<li>미포 클론은 이제 50% 적은 경험치를 얻습니다.</li>
+						<br>
+						<li>10레벨 특성인 피해 +20이 +15로 감소했습니다.</li>
+						</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/mirana_sb.png"></div><br style="clear: left;"><b>미라나: </b>
+					<ul>
+						<li>도약은 이제 미라나가 도약한 방향으로 바라보게 합니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/monkey_king_sb.png"></div><br style="clear: left;"><b>원숭이 왕: </b>
+					<ul>
+						<li>둔갑술은 이제 근처에 짐꾼이 있으면 항상 짐꾼으로 위장합니다.</li>
+						<li>둔갑술은 이제 다른 유닛으로 둔갑시 0.3초의 무적 시간을 제공합니다.</li>
+						<li>둔갑술 쿨다운이 3에서 20으로 증가했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/morphling_sb.png"></div><br style="clear: left;"><b>모플링: </b>
+					<ul>
+						<li>파도 형상 쿨다운이 14/13/12/11에서 17/15/13/11로 증가했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/naga_siren_sb.png"></div><br style="clear: left;"><b>나가 세이렌: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>환영 복제 지속시간이 30에서 24로 감소했습니다.</li>
+						<li>환영 복제 쿨다운이 40에서 45/40/35/30으로 감소했습니다.</li>
+						<li>환영 복제 소모 마나가 70/80/90/100에서 70/85/100/115로 재산정되었습니다.</li>
+						<li>환영 복제 환영의 받는 피해가 550/500/450/400%에서 475/450/425/400%로 감소했습니다.</li>
+						<br>
+						<li>역조가 재설계되었습니다. 패시브 확률 스킬. 매 공격 시 17% 확률로 범위 피해와 방어력 감소를 주는 역조를 시전합니다. 환영도 역조를 시전할 수 있습니다. 지속시간: 4. 방어력 감소: 2/4/6/8. 피해: 30/40/50/60. 효과 범위: 300</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/furion_sb.png"></div><br style="clear: left;"><b>자연의 예언자: </b>
+					<ul>
+						<li>나무정령 처치 보너스 경험치가 30에서 20으로 감소했습니다.</li>
+						<li>나무정령 처치 보너스 현상금이 21에서 16으로 감소했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/necrolyte_sb.png"></div><br style="clear: left;"><b>강령사제: </b>
+					<ul>
+						<li>기본 공격 범위가 550에서 500으로 감소했습니다.</li>
+						<br>
+						<li>이제 심장마비의 오라가 죽음의 파동 대신 유닛 처치시 회복을 제공합니다. <span class="ChangeDetailsPopup">강령사제가 적을 처치시</span></li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/night_stalker_sb.png"></div><br style="clear: left;"><b>밤의 추격자: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>끔찍한 위협이 재설계되었습니다. 수동으로 시전하여 375 범위 내의 모든 적을 침묵시키는 오라를 생성합니다. 5/6/7/8초 지속. (낮 시간 동안은 3초). 더 이상 공격이 빗나가게 만들지 않습니다. 쿨다운: 30/25/20/15. 소모 마나: 50 <span class="ChangeDetailsPopup">오라이기 때문에 만타로 해제할 수 없습니다.</span></li>
+						<br>
+						<li>밤의 사냥꾼은 더 이상 액티브 능력이 아닙니다.</li>
+						<br>
+						<li>암흑이 어둠의 승천으로 변경되었습니다. 밤의 추격자를 날 수 있게 만들고 +50/100/150의 보너스 피해와 방해받지 않는 900의 시야를 얻습니다. 30초 지속. 이 기술의 지속시간 동안 낮이 밤으로 바뀝니다. 쿨다운: 160/140/120. 소모 마나: 125/175/225</li>
+						<br>
+						<li>레벨 25 특성인 끔찍한 위협 쿨다운 -8초가 어둠의 승천 쿨다운 -40초로 변경되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/nyx_assassin_sb.png"></div><br style="clear: left;"><b>닉스 암살자: </b>
+					<ul>
+					<li>피의 복수는 이제 대상을 4초간 단절(break)시킵니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/ogre_magi_sb.png"></div><br style="clear: left;"><b>오거 마법사: </b>
+					<ul>
+					<li>다중 시전이 이제 공격형 타겟팅 아이템에도 적용됩니다. 아이템이 근처의 랜덤한 적에게 자동으로 시전됩니다.</li>
+					<li>다중 시전이 더 이상 기본 스킬들을 강화하지 않습니다.</li>
+					<br>
+					<li>불지르기 시전 범위가 700에서 700/800/900/1000으로 증가했습니다.</li>
+					<li>불지르기가 이제 기본으로 2개의 투사체를 발사합니다. <span class="ChangeDetailsPopup">주 대상에게 하나를 발사하고 대상과 가장 가까운 적에게 하나를 발사합니다.</span></li>
+					<br>
+					<li>화염 폭발 쿨다운이 12에서 12/11/10/9로 재산정되었습니다.</li>
+					<br>
+					<li>피의 욕망 쿨다운이 20에서 20/18/16/14로 감소했습니다.</li>					
+					<li>피의 욕망 이동 속도 보너스가 10/12/14/16%에서 8/10/12/14%로 감소했습니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/omniknight_sb.png"></div><br style="clear: left;"><b>전능기사: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+					<li>정화가 이제 주문 면역 상태의 유닛에게도 시전이 가능합니다.</li>
+					<br>
+					<li>반발력이 천상의 은혜로 변경되었습니다. 아군 유닛을 지정해 강한 해제를 걸고 상태 저항력을 50/60/70/80% 증가시키며 8/12/16/20의 체력 재생을 8초간 부여합니다. 쿨다운: 17/16/15/14. 소모 마나: 75. 시전 범위: 500</li>
+					<br>
+					<li>수호 천사 효과 범위가 600에서 1200으로 증가했습니다.</li>
+					<li>수호 천사 쿨다운이 180/170/160에서 160/150/140으로 감소했습니다.</li>
+					<br>
+					<li>25레벨 특성인 반발력 지속시간 +3초가 천상의 은혜 쿨다운 -8초로 변경되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/oracle_sb.png"></div><br style="clear: left;"><b>예지자: </b>
+					<ul>
+						<li>행운의 끝 피해가 90/120/150/180에서 120/150/180/210으로 증가했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/obsidian_destroyer_sb.png"></div><br style="clear: left;"><b>외계 침략자: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>비전 구체의 보너스 피해가 대상의 175 효과 범위 안에 방사됩니다.</li>
+						<li>비전 구체는 더 이상 환영에게 추가 피해를 주지 않습니다.</li>
+						<br>
+						<li>정수의 오라가 Equilibrium으로 변경되었습니다. 자기 자신에게 거는 버프 스킬. 가하는 모든 주문 피해의 60/80/100/120%가 마나로 전환되고 적을 1.75초간 8/16/24/32% 둔화시킵니다. 7초 지속. 쿨다운: 20 소모 마나: 50</li>
+						<br>
+						<li>15레벨 특성인 정수의 오라 확률 +15%가 방어력 +6으로 변경되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/pangolier_sb.png"></div><br style="clear: left;"><b>천갑검사: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+					<li>심장 꿰뚫기가 Lucky Shot으로 변경되었습니다. 매 타격 시 20% 확률로 2/3/4/5초간 대상을 40% 둔화시키고 침묵과 무장해제 중 하나를 적용합니다. 여러 번 중첩될 수 있습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/phantom_assassin_sb.png"></div><br style="clear: left;"><b>유령 자객: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+					<li>유령 타격 쿨다운이 14/11/8/5에서 11/9/7/5로 재산정되었습니다.</li>
+					<li>유령 타격 시전 지점이 0.3에서 0.25로 향상되었습니다.</li>
+					<li>유령 타격 공격 속도가 130에서 100/125/150/175로 재산정되었습니다.</li>
+					<li>유령 타격은 더 이상 공격 제한 횟수를 가지지 않습니다.</li>
+					<li>유령 타격 공격 속도 보너스가 2.5초간 지속됩니다.</li>
+					<li>유령 타격 소모 마나가 50에서 35/40/45/50으로 재산정되었습니다.</li>
+					<li>유령 타격 공격 속도 보너스가 특정 대상에 따라 변하지 않습니다.</li>
+					<br>
+					<li>눈속임의 미니맵에서 보이지 않게 되는 효과가 시전 기술로 변경되었습니다. <span class="ChangeDetailsPopup">회피 효과는 그대로입니다.</span> 유령 자객의 600 거리 안에 적 영웅이나 포탑이 없다면 (연막처럼) 적이 유령 자객을 보지 못하게 만듭니다. 공격 시 해제되지 않습니다. 지속시간이 지나거나 적 영웅이 근처에 와서 해제되어도 0.75초간 남습니다. 25초 지속. 쿨다운: 60/55/50/45. 소모 마나: 20</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/phantom_lancer_sb.png"></div><br style="clear: left;"><b>환영 창기사: </b>
+					<ul>
+						<li>영혼의 창 둔화 효과가 10/20/30/40%에서 10/18/26/34%로 감소했습니다.</li>
+						<br>
+						<li>병치술 환영의 받는 피해가 600%에서 650%로 증가했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/phoenix_sb.png"></div><br style="clear: left;"><b>불사조: </b>
+					<ul>
+						<li>이카루스의 날개 둔화 효과가 28%에서 19/22/25/28%로 재산정되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/puck_sb.png"></div><br style="clear: left;"><b>퍽: </b>
+					<ul>
+						<li>꿈의 고리는 이제 대상을 구속 상태로 만듭니다: 순간이동과 이동 관련 능력을 막습니다.</li>
+						<br>
+						<li>15레벨 특성인 피해 +50이 +90으로 증가했습니다.</li>
+						<li>15레벨 특성인 주문 증폭 +8%이 +15%로 증가했습니다.</li>
+						</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/pudge_sb.png"></div><br style="clear: left;"><b>퍼지: </b>
+					<ul>
+						<li>살점 무더기는 더 이상 마법 저항력을 제공하지 않습니다.</li>
+						<li>살점 무더기는 이제 3/6/9/12의 체력 재생을 제공합니다.</li>
+						<br>
+						<li>사지 절단의 힘 비례 피해가 30/45/60%에서 30/60/90%로 증가했습니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/queenofpain_sb.png"></div><br style="clear: left;"><b>고통의 여왕: </b>
+					<ul>
+						<li>초음파 비명은 이제 유닛을 1.4초간 350거리만큼 밀어냅니다. <span class="ChangeDetailsPopup">기절은 아닙니다.</span></li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/razor_sb.png"></div><br style="clear: left;"><b>레이저: </b>
+					<ul>
+						<li>불안정한 전류는 더 이상 5초마다 랜덤한 유닛을 둔화시키고 정화하지 않습니다.</li>
+						<li>불안정한 전류는 이제 6/5/4/3초마다 500 범위 내의 모든 적 유닛에게 60/80/100/120 피해를 줍니다.</li>
+						<br>
+						<li>플라즈마 장막은 이제 맞은 대상을 1.5초간 최소 5%에서 최대 25/30/35/40%까지 둔화시킵니다. 둔화는 중첩될 수 있습니다. <span class="ChangeDetailsPopup">플라즈마 장막은 두 번 타격합니다.</span></li>
+						<br>
+						<li>25레벨 특성인 불안정한 전류 쿨다운 -3초가 불안정한 전류 피해 +200으로 변경되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/riki_sb.png"></div><br style="clear: left;"><b>리키: </b>
+					<ul>
+						<li>점멸 가격 쿨다운이 16/12/8/4에서 10/8/6/4로 재산정되었습니다.</li>
+						<li>점멸 가격 피해가 100에서 75/90/105/120으로 재산정되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/rubick_sb.png"></div><br style="clear: left;"><b>루빅: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+					<li>기본 공격력이 3 증가했습니다.</li>
+					<li>민첩이 14 + 1.6에서 19 + 2.1로 증가했습니다.</li>
+					<li>지능 상승량이 2.4에서 2.7로 증가했습니다.</li>
+					<br>
+					<li>공허장이 Arcane Supremacy로 변경되었습니다. 패시브. 14/18/22/26%의 주문 증폭을 주고 루빅이 시전하는 모든 디버프의 지속시간이 20/28/36/44% 늘어납니다.</li>
+					<br>
+					<li>주문 강탈은 이제 0 대신 최소 0.15의 시점 지점을 갖습니다.</li>
+					<br>
+					<li>15레벨 특성인 시전 범위 +100이 +125로 증가했습니다.</li>
+					<li>20레벨 특성인 공허장 +5%가 음영 광선 쿨다운 -5초로 변경되었습니다.</li>
+					<li>25레벨 특성인 훔친 기술 주문 증폭 +75%가 +50%로 변경되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/sand_king_sb.png"></div><br style="clear: left;"><b>모래 제왕: </b>
+					<ul>
+						<li>모래 폭풍은 더 이상 정신집중 기술이 아닙니다. 모래 폭풍과 투명화 효과는 범위를 벗어나는 즉시 종료됩니다. 공격이나 기술 시전 등은 모래 제왕을 0.7초간 보이게 만듭니다.</li>
+						<li>모래 폭풍 효과 범위가 525에서 350/450/550/650으로 변경되었습니다.</li>
+						<li>모래 폭풍 피해가 40/60/80/100에서 25/50/75/100으로 재산정되었습니다.</li>
+						<li>모래 폭풍 쿨다운이 34/26/18/10에서 34/28/22/16으로 재산정되었습니다.</li>
+						<li>모래 폭풍 지속시간이 50에서 20/25/30/35로 감소했습니다.</li>
+						<li>모래 폭풍의 시각 효과가 약간 업데이트됐습니다.</li>
+						<br>
+						<li>땅울리기 효과 범위가 25/50/75 대신 항상 진동당 50씩 늘어납니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/shadow_demon_sb.png"></div><br style="clear: left;"><b>그림자 악마: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>영혼 사냥꾼이 재설계되었습니다. 175/200/225/250의 효과 범위를 지정합니다. 범위 안의 모든 유닛이 현재 체력의 25/30/35/40%를 잃고, 10초 후 그 절반을 되돌려받습니다. 쿨다운: 26/24/22/20. 시전 범위: 700. 소모 마나: 110 <span class="ChangeDetailsPopup">해제시에도 체력을 되돌려받습니다.</span></li>
+						<br>
+						<li>분열 환영의 체력은 이제 기술 시전을 시작했을 때 결정됩니다.</li>
+						<li>분열 지속시간이 2.5에서 2.75로 증가했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/nevermore_sb.png"></div><br style="clear: left;"><b>그림자 마귀: </b>
+					<ul>
+						<li>기본 방어력이 1 증가했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/shadow_shaman_sb.png"></div><br style="clear: left;"><b>그림자 주술사: </b>
+					<ul>
+						<li>대규모 뱀 와드는 이제 중앙에 약간 큰 구멍을 중심으로 원형으로 소환됩니다.</li>
+						<li>대규모 뱀 와드는 이제 소환 시 미리 범위를 볼 수 있습니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/skywrath_mage_sb.png"></div><br style="clear: left;"><b>하늘분노 마법사: </b>
+					<ul>
+						<li>충격탄은 이제 근처에 적 영웅이 없다면 크립에게 맞습니다. <span class="ChangeDetailsPopup">크립에게는 75%의 피해를 줍니다.</span></li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/slardar_sb.png"></div><br style="clear: left;"><b>슬라다: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+					<li>기본 방어력이 1 증가했습니다.</li>
+					<br>
+					<li>심해의 강타가 재설계되었습니다. 패시브. (대상과 상관없이) 매 영웅의 4번째 공격은 대상을 1/1.1/1.2/1.3초간 기절시키고 75/125/175/225의 물리 피해를 줍니다.</li>
+					<br>
+					<li>슬리더린 충격 기절 지속시간이 1.25/1.5/1.75/2에서 1초로 감소했습니다. 공격과 이동 둔화 지속시간이 2에서 3/4/5/6초로 증가했습니다. 둔화량이 20%에서 20/25/30/35%로 증가했습니다. 피해가 75/125/175/225에서 80/140/200/260로 증가했습니다.</li>
+					<br>
+					<li>15레벨 특성인 강타 피해 +100이 +75로 변경되었습니다.</li>
+					<li>25레벨 특성인 강타 확률 +15%가 슬리더린 충격 기절 +1.5초로 변경되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/slark_sb.png"></div><br style="clear: left;"><b>슬라크: </b>
+					<ul>
+						<li>회전 계수가 0.6에서 0.7로 향상되었습니다.</li>
+						<br>
+						<li>뛰어들기는 이제 대상을 구속 상태로 만듭니다: 순간이동과 이동 관련 능력을 막습니다.</li>
+						<br>
+						<li>어둠의 춤 지속시간이 4에서 4/4.5/5로 재산정되었습니다.</li>
+						<br>
+						<li>능력 전환 디버프 중 죽은 영웅은 이제 슬라크에게 영구적으로 민첩 1를 강탈당합니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/sniper_sb.png"></div><br style="clear: left;"><b>저격수: </b>
+					<ul>
+					<li>정조준을 시전하면 다음 공격의 사거리가 두 배가 됩니다. 쿨다운은 공격이 사용된 이후부터 계산됩니다. 쿨다운: 15/12/9/6. 소모 마나: 30</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/spirit_breaker_sb.png"></div><br style="clear: left;"><b>영혼 파괴자: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>황천의 일격은 더 이상 속박당한 도중에 사용할 수 없습니다.</li>
+						<br>
+						<li>어둠의 돌진은 더 이상 고정된 속도로 이동하지 않습니다. 이동 속도 제한을 가지지 않고 현재 이동 속도에 300/325/350/375를 추가합니다. <span class="ChangeDetailsPopup">이전에는 이동 속도가 600/650/700/750로 고정되었습니다.</span></li>
+						<li>어둠의 돌진 충돌 타격에 이동 속도 피해 보너스가 적용되지 않던 현상을 수정하였습니다.</li>
+						<br>
+						<li>혼신의 강타는 더 이상 이동 속도를 제공하지 않습니다.</li>
+						<li>혼신의 강타 피해가 12/24/36/48%에서 16/24/32/40%로 감소했습니다.</li>
+						<br>
+						<li>신속의 권능이 Bulldoze로 변경되었습니다. 시전하면 8초간 영웅의 이동 속도를 +12/18/24/30% 증가시키고 상태 저항력 +30/40/50/60%를 부여합니다 . 쿨다운: 22. 소모 마나: 25/30/35/40 <span class="ChangeDetailsPopup">어둠의 돌진 도중에 사용이 가능합니다.</span></li>
+						<br>
+						<li>20레벨 특성인 혼신의 강타 피해 +30%이 +15%로 감소했습니다.</li>
+						<li>20레벨 특성인 돌진 속도 +400이 Bulldoze 쿨다운 -7초로 변경되었습니다.</li>
+					</ul>
+
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/sven_sb.png"></div><br style="clear: left;"><b>스벤: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>전쟁 함성이 재설계되었습니다. 스벤과 근처의 아군 영웅에게 이동 속도 보너스를 제공하고 피해를 막는 방패를 생성합니다. <span class="ChangeDetailsPopup">피해 방어는 방어력 감소 이후에 계산됩니다.</span> 10초 지속. 방패가 부서지면 버프가 종료됩니다. 이동 속도: 8/12/16/20%. 방패 체력: 100/200/300/400. 효과 범위: 700. 쿨다운: 36/32/28/24. 소모 마나: 40</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/techies_sb.png"></div><br style="clear: left;"><b>기술단: </b>
+					<ul>
+						<li>기본 이동 속도가 270에서 315로 증가했습니다.</li>
+						<li>기본 지능이 2 증가했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/templar_assassin_sb.png"></div><br style="clear: left;"><b>암살 기사: </b>
+					<ul>
+						<li>20레벨 특성인 굴절의 보호막으로 정화가 숨어들기 정화로 변경되었습니다.</li>
+						<li>25레벨 특성인 사이오닉 검 둔화가 숨어들기 1.5초 기절로 변경되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/terrorblade_sb.png"></div><br style="clear: left;"><b>테러블레이드: </b>
+					<ul>
+						<li>분리는 더 이상 주문 면역을 뚫지 못합니다.</li>
+						<li>20레벨 특성인 투영 쿨다운 -10초가 -8로 감소했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/tidehunter_sb.png"></div><br style="clear: left;"><b>파도사냥꾼: </b>
+					<ul>
+						<li>닻 강타는 이제 기본 피해에 더해 효과 범위 안의 모든 적을 45/90/135/180의 보너스 피해로 공격합니다.</li>
+						<br>
+						<li>재해 피해가 200/290/380에서 200/300/400으로 증가했습니다.</li>
+						<br>
+						<li>10레벨 특성인 분출 피해 +80이 +100으로 증가했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/shredder_sb.png"></div><br style="clear: left;"><b>벌목꾼: </b>
+					<ul>
+						<li>차크람 투사체 피해가 더 이상 고대 크립을 무시하지 않습니다.</li>
+						<br>
+						<li>죽음의 회전날은 이제 항상 순수 피해를 줍니다.</li>
+						<li>죽음의 회전날 피해가 100/150/200/250에서 90/120/150/180으로 변경되었습니다.</li>
+						<li>죽음의 회전날 능력치 감소량이 15%에서 12/13/14/15%로 재산정되었습니다.</li>
+						<li>죽음의 회전날은 이제 나무를 자른 수만큼 10/14/18/22의 추가 피해를 줍니다.</li>
+						<br>
+						<li>25레벨 특성인 죽음의 회전날 +8%이 +12%로 증가했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/tiny_sb.png"></div><br style="clear: left;"><b>타이니: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>나무 잡기 범위 피해가 디나이시에는 적용되지 않습니다.</li>
+						<li>나무 잡기 쿨다운이 24/20/16/12에서 27/22/17/12로 증가했습니다.</li>
+						<br>
+						<li>성장은 더 이상 30/40/50%의 상태 저항력을 제공하지 않습니다.</li>
+						<li>성장 방어력이 5/10/15에서 7/16/25로 증가했습니다.</li>
+						<br>
+						<li>산사태의 작동 방식이 재설계되었습니다. 범위 안의 유닛은 0.3초마다 지속적으로 짧은 기절과 피해를 받습니다. 기절은 0.2초간 지속됩니다.</li>
+						<li>산사태 지속시간이 1에서 1.8로 증가했습니다.</li>
+						<li>산사태 효과 범위가 275에서 400으로 증가했습니다.</li>
+						<li>산사태 쿨다운이 23/21/19/17에서 23/20/17/14로 감소했습니다.</li>
+						<li>산사태 총 피해가 120/180/240/300에서 90/160/230/300으로 재산정되었습니다.</li>
+						<br>
+						<li>던지기 산사태 연계 피해 보너스가 2배에서 3배로 증가했습니다. <span class="ChangeDetailsPopup">산사태 지속시간이 증가해서 던지기 지속시간 동안 산사태가 종료되지 않기 때문입니다.</span></li>
+						<br>
+						<li>10레벨 특성인 마법 저항력 +20%이 이동 속도 +20으로 변경되었습니다.</li>
+						<li>25레벨 특성인 산사태 쿨다운 -12초가 -9초로 변경되었습니다. <span class="ChangeDetailsPopup">산사태 쿨다운 감소에 맞춰 수정되었습니다.</span></li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/treant_sb.png"></div><br style="clear: left;"><b>나무정령 수호자: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>자연의 눈속임이 재설계되었습니다. 패시브. 265 거리 안에 나무가 있으면 투명화됩니다. 4.75/4/3.25/2.5초의 투명화 지연시간이 있습니다. 피해를 입으면 지연시간이 초기화됩니다. 투명화시 나무 사이를 걸어다닐 수 있고, 이동 속도 보너스 10/15/20/25%가 추가됩니다. 범위에서 벗어나도 0.75초간 지속됩니다. 투명화 상태에서 공격 시 대상을 0.4/1/1.6/2.2초간 속박시키고 속박 시간 동안 30/80/130/180 피해를 입힙니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/troll_warlord_sb.png"></div><br style="clear: left;"><b>트롤 전쟁군주: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+					<li>기본 공격력이 38-56에서 44-56으로 증가했습니다.</li>
+						<br>
+					<li>광전사의 분노는 이제 확률로 강타를 휘두르는 대신 대상을 속박시킵니다.</li>
+					<li>광전사의 분노 속박 확률이 10%에서 10/12/14/16%로 증가했습니다.</li>
+					<li>이제 해골 파쇄기와 심연의 검을 구입할 수 있습니다.</li>
+						<br>
+					<li>열정 중첩 한계가 7에서 12로 증가했습니다.</li>
+					<li>열정 중첩이 공격이 빗나갔을 때에도 올라가던 현상을 수정했습니다.</li>
+					<li>열정은 이제 새로운 대상을 공격시 0 중첩부터 시작합니다.</li>
+					<br>
+					<li>전투 결의가 재설계되었습니다. 조작할 수 없는 트랜스 상태에 들어가 900 범위 안의 가장 가까운 적부터 강제로 공격합니다. 이 상태에서는 둔화 될 수 없고 죽을 수 없습니다. 공격 속도 +140/170/200 증가. 이동 속도 +30/35/40% 증가. 흡혈 +40/60/80% 증가. 6.5초 지속. 현재 공격하고 있는 적의 기본 시야를 얻습니다. 쿨다운: 90. 소모 마나: 150</li>
+					<br>
+					<li>25레벨 특성인 전투 결의 정화가 강한 정화로 변경되었습니다. <span class="ChangeDetailsPopup">기절 도중에 사용할 수 있습니다.</span></li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/tusk_sb.png"></div><br style="clear: left;"><b>얼음폭군: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>얼어붙은 인장이 Tag Team으로 변경되었습니다. 시전할 수 있는 오라형 스킬. 5초 지속. 영향받는 적이 공격에 25/50/75/100 더 많은 물리 피해를 입고 공격당할 때마다 0.5초간 75%만큼 둔화되게 만듭니다. 효과 범위: 350. 쿨다운: 15. 소모 마나: 40/50/60/70 <span class="ChangeDetailsPopup">얼음폭군은 치명타로 물리 피해를 증가시킬 수 있습니다.</span></li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/abyssal_underlord_sb.png"></div><br style="clear: left;"><b>지하군주: </b>
+					<ul>
+						<li>위축의 오라에 영향받는 적 영웅이 사망시 영구적으로 피해 보너스 +2/3/4/5가 추가됩니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/undying_sb.png"></div><br style="clear: left;"><b>언다잉: <span class="Reworked">능력이 재설계되었습니다.</span></b>
+					<ul>
+						<li>기본 이동 속도가 305에서 295로 감소했습니다.</li>
+						<br>
+						<li>살덩이 골렘이 재설계되었습니다. 더 이상 피해를 증폭하지 않습니다. 375 효과 범위 안의 적에게 24/32/40%의 둔화를 적용합니다. <span class="ChangeDetailsPopup">이전에는 최대 750까지 거리에 따라 1%에서 20%의 둔화 효과를 주었습니다.</span> 400 효과 범위 안의 적 유닛은 초당 현재 체력의 7%를 마법 피해로 입습니다. 언다잉은 체력 +400/1000/1600 보너스를 받습니다. 쿨다운: 110</li>
+						<li>살덩이 골렘의 모델 크기가 약간 증가했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/ursa_sb.png"></div><br style="clear: left;"><b>우르사: </b>
+					<ul>
+						<li>제압이 공격이 빗나갈 시 공격 횟수를 소모하지 않던 현상을 수정했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/vengefulspirit_sb.png"></div><br style="clear: left;"><b>복수 혼령: </b>
+					<ul>
+						<li>복수의 오라는 더 이상 죽은 아군의 환영을 생성하지 않습니다.</li>
+						<li>복수의 오라는 이제 사망시 기술을 시전할 수 없는 아가님의 홀 환영을 생성합니다. 아가님의 홀을 구입하면 기술 시전이 가능해집니다.</li>
+						<br>
+						<li>황천의 이동술 시전 범위가 700/950/1200에서 700/850/1000으로 재산정되었습니다.</li>
+						<li>황천의 이동술은 이제 충전 횟수 2회를 가집니다. 90/80/70초마다 충전됩니다. <span class="ChangeDetailsPopup">아가님의 홀 쿨다운은 여전히 10초입니다.</span></li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/venomancer_sb.png"></div><br style="clear: left;"><b>맹독사: </b>
+					<ul>
+						<li>역병 와드의 충돌 크기가 증가했습니다.</li>
+						<br>
+						<li>15레벨 특성인 시전 범위 +200이 맹독 숨결 영웅 타격 시 맹독 와드 2개 소환으로 변경되었습니다.</li>
+						<li>20레벨 특성인 맹독 숨결 영웅 타격 시 맹독 와드 2개 소환이 주문 흡혈 +15%로 변경되었습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/viper_sb.png"></div><br style="clear: left;"><b>바이퍼: </b>
+					<ul>
+						<li>황천극독 효과 범위가 300에서 350으로 증가했습니다.</li>
+						<li>황천극독 피해가 20/30/40/50에서 20/35/50/65로 재산정되었습니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/warlock_sb.png"></div><br style="clear: left;"><b>흑마법사: </b>
+					<ul>
+						<li>죽음의 결속이 대상 주위의 유닛을 찾는 대신 유닛 사이를 튕겨다닙니다.</li>
+						<li>죽음의 결속이 전장의 안개 속의 유닛을 무시하던 현상을 수정했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/weaver_sb.png"></div><br style="clear: left;"><b>길쌈꾼: </b>
+					<ul>
+					<li>벌레 무리 벌레들은 이제 우선 공격 순위를 갖습니다. <span class="ChangeDetailsPopup">크립 등에게 우선적으로 공격됩니다. 그러안는 유령과 같습니다</span></li>
+						<br>
+					<li>이중 공격 쿨다운이 7/6/5/3에서 9/7/5/3으로 증가했습니다.</li>
+					</ul>
+					
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/witch_doctor_sb.png"></div><br style="clear: left;"><b>저주술사: </b>
+					<ul>
+						<li>죽음의 와드 피해가 60/105/150에서 75/125/175로 증가했습니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/skeleton_king_sb.png"></div><br style="clear: left;"><b>망령 제왕: </b>
+					<ul>
+						<li>해골 체력이 350에서 250으로 감소했습니다.</li>
+						<li>해골은 이제 첫 사망시 3초 후에 부활합니다.</li>
+					</ul>
+					<div class="ChangeNoteImage"><img src="http://cdn.dota2.com/apps/dota2/images/heroes/zuus_sb.png"></div><br style="clear: left;"><b>제우스: </b>
+					<ul>
+						<li>비구름은 이제 더 이상 Tab키 선택 시 자동으로 선택되지 않습니다.</li>
+						<li>비구름의 번갯불은 더 이상 영웅의 쿨다운 감소에 영향받지 않습니다.</li>
+					</ul>
+					
+					
+        </div>
+    </div>
+
+    <div class="Container" id="Footer">
+        <div class="Inner"></div>
+    </div>
+
+</body>
+</html>

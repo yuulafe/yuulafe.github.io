@@ -183,45 +183,6 @@ a, a:visited, a:active
     display: block;
 }
 
-b span.Reworked
-{
-	padding-left: 5px;
-	color: #FF5307;
-}
-
-b span.New
-{
-	padding-left: 5px;
-	color: #36D15E;
-}
-
-b span.Scepter
-{
-	padding-left: 5px;
-	color: #00CCFF;
-}
-
-b span.Captains
-{
-	padding-left: 5px;
-	color: #36D15E;
-}
-
-span.buff
-{
-	color: #4174D9;
-}
-
-span.nerf
-{
-	color: #F15F5F;
-}
-
-span.fix
-{
-	color: #2F9D27;
-}
-
 #Heroes ul, #Items ul
 {
     padding-bottom: 30px;

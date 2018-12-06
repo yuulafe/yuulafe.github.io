@@ -206,8 +206,8 @@ div#timelineContainer {
 }
 
 div.timelineToggle {
-	float:right;
-	margin-right:0;
+	float:left;
+	margin-left: 14px;
 	white-space:nowrap;
 }
 
@@ -285,18 +285,18 @@ dl.timelineMinor {
 	}
 
 		.timelineMinor dt a {
-			color:#999;
+			color:#FFF;
 			cursor:pointer;
 		}
 
 		.timelineMinor dt a.closed {
-			color:#999;
+			color:#FFF;
 			font-size:1em;
 			margin-left:0;
 		}
 
 		.timelineMinor dt a.open {
-			color:#7DBADF;
+			color:#999;
 		}
 
 		.timelineMinor dt a:hover {
@@ -306,6 +306,7 @@ dl.timelineMinor {
 	.timelineMinor dd {
 		padding-left:24px;
 		width:100%;
+		font-size: 14px;
 	}
 
 		.timelineMinor dd h3 {

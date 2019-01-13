@@ -141,7 +141,7 @@ body {
 }
 
 .container {
-	width:940px;
+	/* width:940px; */
 	margin-left:auto;
 	margin-right:auto;
 	padding:10px;
@@ -201,8 +201,8 @@ p {
 
 div#timelineContainer {
 	border-left:2px solid #ccc;
-	margin:20px auto;
-	width:900px;
+	margin:20px 19px;
+	/* width:900px; */
 }
 
 div.timelineToggle {
@@ -233,7 +233,7 @@ div.timelineMajor {
 	clear:left;
 	float:left;
 	margin:0 0 12px;
-	width:900px;
+	/* width:900px; */
 }
 
 	.timelineMajor h2 {
@@ -270,7 +270,7 @@ dl.timelineMinor {
 	margin:0 12px 0 0!important;
 	padding:4px 4px 4px 0!important;
 	position:relative;
-	width:880px;
+	/* width:880px; */
 }
 
 	.timelineMinor dt {
